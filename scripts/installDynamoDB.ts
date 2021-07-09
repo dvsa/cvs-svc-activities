@@ -1,5 +1,5 @@
-import util from "util";
-import { exec } from "child_process";
+import util from 'util';
+import { exec } from 'child_process';
 const shell = util.promisify(exec);
 
 const installDynamoDB = async () => {

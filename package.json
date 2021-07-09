@@ -19,6 +19,7 @@
     "predeploy": "npm install && npm run tslint && npm run prepush",
     "security-checks": "git secrets --scan && git log -p | scanrepo",
     "tslint": "tslint --fix src/**/*.ts tests/**/*.ts",
+    "format": "prettier --write .",
     "sonar-scanner": "npm run tslint && npm run coverage && sonar-scanner",
     "audit": "npm audit",
     "package": "mkdir ${ZIP_NAME} && cp package.json package-lock.json ${ZIP_NAME}/ && cp -r .build/src/* ${ZIP_NAME}/ && cd ${ZIP_NAME} && npm ci --production && rm package.json package-lock.json && zip -qr ../${ZIP_NAME}.zip .",
@@ -56,6 +57,7 @@
     "jest-plugin-context": "^2.9.0",
     "jest-sonar-reporter": "^2.0.0",
     "lambda-tester": "^3.6.0",
+    "prettier": "2.3.2",
     "serverless": "^2.43.1",
     "serverless-dynamodb-local": "0.2.39",
     "serverless-offline": "5.12.0",
@@ -82,7 +84,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run security-checks && npm audit && npm run tslint",
+      "pre-commit": "npm run security-checks && npm audit && npm run tslint && npm run format",
       "pre-push": "npm run prepush"
     }
   }
