@@ -13,18 +13,26 @@ describe("Activity lambda - updateActivity path", () => {
   });
   context("when the updateActivity function is invoked", () => {
     const payload: any = {
-      body:
-        [{id: existingId, waitReason: ["Other", "Waiting for vehicle"], notes: "sample"}]
+      body: [
+        {
+          id: existingId,
+          waitReason: ["Other", "Waiting for vehicle"],
+          notes: "sample",
+        },
+      ],
     };
     it("should respond with HTTP 204", () => {
-      ActivityService.prototype.updateActivity = jest.fn().mockResolvedValue("Success");
+      ActivityService.prototype.updateActivity = jest
+        .fn()
+        .mockResolvedValue("Success");
       const lambda = lambdaTester(updateActivity);
-      return lambda.event(payload)
-        .expectResolve((response: any) => {
-          expect(response.headers["Access-Control-Allow-Origin"]).toEqual("*");
-          expect(response.headers["Access-Control-Allow-Credentials"]).toEqual(true);
-          expect(response.statusCode).toEqual(204);
-        });
+      lambda.event(payload).expectResolve((response: any) => {
+        expect(response.headers["Access-Control-Allow-Origin"]).toEqual("*");
+        expect(response.headers["Access-Control-Allow-Credentials"]).toEqual(
+          true
+        );
+        expect(response.statusCode).toEqual(204);
+      });
     });
   });
 });
