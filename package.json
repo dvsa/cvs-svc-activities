@@ -14,15 +14,15 @@
     "build:copy": "find src -type f \\( -name \"*.yml\" -or -name \"*.json\" \\) | cpio -pdm .build && find tests -type f \\( -name \"*.yml\" -or -name \"*.json\" \\)  | cpio -pdm .build",
     "test": "BRANCH=local SLS_DEBUG=* AWS_XRAY_CONTEXT_MISSING=LOG_ERROR jest --testMatch=\"**/*.unitTest.ts\"",
     "coverage": "npm t -- --runInBand --coverage",
-    "test-i": "BRANCH=local jest --testMatch=\"**/*.intTest.ts\" --runInBand",
-    "prepush": "npm run coverage && npm run build",
+    "test-i": "BRANCH=local jest --testMatch=\"**/*.intTest.ts\" --runInBand --globalSetup='./scripts/setUp.ts' --globalTeardown='./scripts/tearDown.ts'",
+    "prepush": "npm run coverage && npm run build && npm run test-i",
     "predeploy": "npm install && npm run tslint && npm run prepush",
     "security-checks": "git secrets --scan && git log -p | scanrepo",
     "tslint": "tslint --fix src/**/*.ts tests/**/*.ts",
     "sonar-scanner": "npm run tslint && npm run coverage && sonar-scanner",
     "audit": "npm audit",
     "package": "mkdir ${ZIP_NAME} && cp package.json package-lock.json ${ZIP_NAME}/ && cp -r .build/src/* ${ZIP_NAME}/ && cd ${ZIP_NAME} && npm ci --production && rm package.json package-lock.json && zip -qr ../${ZIP_NAME}.zip .",
-    "tools-setup": "sls dynamodb migrate && BRANCH=local gulp start-serverless && sls dynamodb seed --seed=activities"
+    "tools-setup": "ts-node scripts/installDynamoDB.ts"
   },
   "author": "",
   "license": "ISC",
