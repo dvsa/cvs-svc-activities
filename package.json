@@ -4,7 +4,7 @@
   "description": "A template application containing boilerplate code for writing CVS microservices.",
   "main": "handler.js",
   "engines": {
-    "node": "10.18.1",
+    "node": "14.*",
     "npm": "5.6.0"
   },
   "scripts": {
@@ -51,7 +51,6 @@
     "@types/uuid": "^3.4.6",
     "audit-filter": "^0.5.0",
     "aws-lambda-mock-context": "^3.2.1",
-    "gulp": "^4.0.2",
     "husky": "^3.1.0",
     "jest": "^25.5.4",
     "jest-plugin-context": "^2.9.0",

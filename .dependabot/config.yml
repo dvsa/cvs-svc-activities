@@ -5,12 +5,6 @@ update_configs:
     update_schedule: 'live'
     target_branch: 'devops'
     version_requirement_updates: increase_versions
-    default_reviewers:
-      - 'KHodderDVSA'
-      - 'alex-deloitte'
-    default_assignees:
-      - 'KHodderDVSA'
-      - 'alex-deloitte'
     allowed_updates:
       - match:
           update_type: 'security'
