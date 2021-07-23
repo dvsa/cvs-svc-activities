@@ -62,6 +62,8 @@ resources:
             AttributeType: S
           - AttributeName: activityType
             AttributeType: S
+          - AttributeName: testerName
+            AttributeType: S
         KeySchema:
           - AttributeName: id
             KeyType: HASH
@@ -97,6 +99,20 @@ resources:
                 KeyType: RANGE
             Projection:
               ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+          - IndexName: TesterNameIndex
+            KeySchema:
+              - AttributeName: testerName
+                KeyType: HASH
+            Projection:
+              NonKeyAttributes:
+                - id
+                - startTime
+                - endTime
+                - activityType
+              ProjectionType: INCLUDE
             ProvisionedThroughput:
               ReadCapacityUnits: 1
               WriteCapacityUnits: 1
