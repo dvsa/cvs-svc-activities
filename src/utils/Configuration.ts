@@ -95,10 +95,25 @@ class Configuration {
             throw new Error(ERRORS.DYNAMODB_NOT_DEFINED);
         }
 
-        // Not defining BRANCH will default to local
-        const env: string = (!process.env.BRANCH || process.env.BRANCH === ENV_VARIABLES.LOCAL) ? ENV_VARIABLES.LOCAL : ENV_VARIABLES.REMOTE;
-
-        return this.config.dynamodb[env];
+        // Not defining BRANCH will default to remote
+        // const env: string = (!process.env.BRANCH || process.env.BRANCH === ENV_VARIABLES.LOCAL) ? ENV_VARIABLES.LOCAL : ENV_VARIABLES.REMOTE;
+        let env;
+        switch (process.env.BRANCH) {
+            case "local":
+                env = "local";
+                break;
+            case "local-global":
+                env = "local-global";
+                break;
+            case "localstack":
+                env = "localstack";
+                break;
+            default:
+                env = "remote";
+        }
+        const cfg = this.config.dynamodb[env];
+        console.log({cfg})
+        return cfg
     }
 
 }
