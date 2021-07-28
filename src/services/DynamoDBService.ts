@@ -1,8 +1,9 @@
 /* tslint:disable */
 import {ActivityType} from "../assets/enums";
 
-const AWSXRay = require("aws-xray-sdk");
-const AWS = AWSXRay.captureAWS(require("aws-sdk"));
+// const AWSXRay = require("aws-xray-sdk");
+// const AWS = AWSXRay.captureAWS(require("aws-sdk"));
+const AWS = require("aws-sdk");
 /* tslint:enable */
 import {AWSError} from "aws-sdk"; // Only used as a type, so not wrapped by XRay
 import {DocumentClient} from "aws-sdk/lib/dynamodb/document_client"; // Only used as a type, so not wrapped by XRay

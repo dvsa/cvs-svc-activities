@@ -40,6 +40,11 @@ dynamodb:
   remote:
     params: {}
     table: cvs-${BRANCH}-activities
+  localstack:
+    params:
+      region: eu-west-1
+      endpoint: http://${LOCALSTACK_HOSTNAME}:4566
+    table: cvs-localstack-activities
 serverless:
   basePath: /${BRANCH}
   port: 3007
