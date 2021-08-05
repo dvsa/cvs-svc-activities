@@ -11,9 +11,13 @@ describe('startActivity Function', () => {
         GetActivityService.prototype.getActivities = jest
           .fn()
           .mockResolvedValue({ testResponse: 1234 });
-        const resp: HTTPResponse = await getActivity({ pathParameters: { id: 1 } }, ctx, () => {
-          return;
-        });
+        const resp: HTTPResponse = await getActivity(
+          { queryStringParameters: { id: 1 } },
+          ctx,
+          () => {
+            return;
+          }
+        );
         expect(resp).toBeInstanceOf(HTTPResponse);
         expect(resp.statusCode).toEqual(200);
         expect(resp.body).toEqual(JSON.stringify({ testResponse: 1234 }));
@@ -27,7 +31,7 @@ describe('startActivity Function', () => {
           .fn()
           .mockRejectedValue(new Error('Oh No!'));
         try {
-          await getActivity({ pathParameters: { id: 1 } }, ctx, () => {
+          await getActivity({ queryStringParameters: { id: 1 } }, ctx, () => {
             return;
           });
         } catch (e) {

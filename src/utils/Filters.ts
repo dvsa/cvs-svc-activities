@@ -1,6 +1,5 @@
-import { HTTPRESPONSE, QUERY_PARAMS } from './../assets/enums';
 import { isAfter, isBefore, isEqual } from 'date-fns';
-import { HTTPResponse } from '../utils/HTTPResponse';
+import { IActivity } from '../models/Activity';
 
 export class ActivityFilters {
   // tslint:disable-next-line: no-empty
@@ -54,10 +53,10 @@ export class ActivityFilters {
    * @param activities Array of activities
    * @returns Array of Activities ordered desc
    */
-  public returnOrderedActivities(activities: string[]): string[] {
-    const sortDateDesc = (date1: any, date2: any) => {
-      const date = new Date(date1.startTime).toISOString();
-      const dateToCompare = new Date(date2.startTime).toISOString();
+  public returnOrderedActivities(activities: IActivity[]): IActivity[] {
+    const sortDateDesc = (activity1: IActivity, activity2: IActivity) => {
+      const date = new Date(activity1.startTime as string).toISOString();
+      const dateToCompare = new Date(activity2.startTime as string).toISOString();
       if (date > dateToCompare) {
         return -1;
       }
@@ -67,11 +66,8 @@ export class ActivityFilters {
       return 0;
     };
     activities.sort(sortDateDesc);
-    if (activities.length <= 10) {
-      return activities;
-    } else {
-      activities.length = 10;
-      return activities;
-    }
+    const { length } = activities;
+    activities.length = length <= 10 ? length : 10;
+    return activities;
   }
 }

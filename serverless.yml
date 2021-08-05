@@ -62,6 +62,8 @@ resources:
             AttributeType: S
           - AttributeName: activityDay
             AttributeType: S
+          - AttributeName: activityType
+            AttributeType: S
         KeySchema:
           - AttributeName: id
             KeyType: HASH
@@ -70,6 +72,8 @@ resources:
             KeySchema:
               - AttributeName: testerStaffId
                 KeyType: HASH
+              - AttributeName: startTime
+                KeyType: RANGE
             Projection:
               NonKeyAttributes:
                 - parentId
@@ -109,6 +113,17 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+          - IndexName: ActivityTypeIndex
+            KeySchema:
+              - AttributeName: activityType
+                KeyType: HASH
+              - AttributeName: startTime
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1         
 custom:
   serverless-offline:
     port: 3007
