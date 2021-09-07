@@ -1,6 +1,7 @@
+// tslint:disable-next-line: no-var-requires
 const AWSXRay = require('aws-xray-sdk');
+// tslint:disable-next-line: no-var-requires
 const AWS = AWSXRay.captureAWS(require('aws-sdk'));
-/* tslint:enable */
 import { AWSError } from 'aws-sdk'; // Only used as a type, so not wrapped by XRay
 import { DocumentClient } from 'aws-sdk/lib/dynamodb/document_client'; // Only used as a type, so not wrapped by XRay
 import { PromiseResult } from 'aws-sdk/lib/request'; // Only used as a type, so not wrapped by XRay
@@ -80,12 +81,14 @@ export class DynamoDBService {
         ...expressionAttributeValues
       }
     };
+    console.log('params for getActivity', params)
     return this.queryAllData(params);
   }
 
   /**
    * Retrieves the ongoing activity for a given staffId
    * @param staffId - staff id for which to retrieve activity
+   * @param startTime - optional parameter to be used as sort key in the key condition
    * @returns Promise<PromiseResult<DocumentClient.QueryOutput, AWSError>>
    */
   public getOngoingByStaffId(
@@ -220,7 +223,7 @@ export class DynamoDBService {
       ? appendAnd(filterExpression, 'testStationPNumber = :testStationPNumber')
       : filterExpression;
     filterExpression = testerStaffId
-      ? appendAnd(filterExpression, 'testStationPNumber = :testStationPNumber')
+      ? appendAnd(filterExpression, 'testerStaffId = :testerStaffId')
       : filterExpression;
     return filterExpression;
   }
@@ -232,9 +235,11 @@ export class DynamoDBService {
    * @returns array of activities
    */
   private async queryAllData(params: any, allData: IActivity[] = []): Promise<IActivity[]> {
+    console.log('inside queryAllData');
     const data: PromiseResult<DocumentClient.QueryOutput, AWSError> = await DynamoDBService.client
       .query(params)
       .promise();
+    console.log('queryAllData', data);
     if (data.Items && data.Items.length > 0) {
       allData = [...allData, ...(data.Items as IActivity[])];
     }
@@ -242,6 +247,7 @@ export class DynamoDBService {
       params.ExclusiveStartKey = data.LastEvaluatedKey;
       return this.queryAllData(params, allData);
     } else {
+      console.log('all data is: ', allData)
       return allData;
     }
   }
@@ -259,7 +265,7 @@ export class DynamoDBService {
       filterValues.push({ [':testStationPNumber']: testStationPNumber });
     }
     if (testerStaffId) {
-      filterValues.push({ [':testerStaffId']: testStationPNumber });
+      filterValues.push({ [':testerStaffId']: testerStaffId });
     }
     return filterValues;
   }

@@ -64,7 +64,8 @@ describe('GET /activities/details', () => {
   context('when all the parameters were passed', () => {
     context('but no data received from the database', () => {
       it('should respond with HTTP 404', () => {
-        queryEventParams.fromStartTime = '2020-02-12';
+        queryEventParams.fromStartTime = '2010-02-12';
+        queryEventParams.toStartTime = '2011-02-12';
         return request
           .get(
             '/activities/details/?activityType=' +

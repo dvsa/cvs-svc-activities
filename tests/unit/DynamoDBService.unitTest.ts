@@ -27,7 +27,7 @@ describe('DynamoDBService', () => {
           TableName: 'cvs-local-activities',
           IndexName: 'StaffIndex',
           KeyConditionExpression: 'testerStaffId = :staffId',
-          FilterExpression: "attribute_type(endTime, :NULL)",
+          FilterExpression: 'attribute_type(endTime, :NULL)',
           ExpressionAttributeValues: {
             ':staffId': '1234',
             ':NULL': 'NULL'
@@ -51,7 +51,7 @@ describe('DynamoDBService', () => {
           }
         };
         const dynamoDbService = new DynamoDBService();
-        await dynamoDbService.getOngoingByStaffId('1234','2021-07-01');
+        await dynamoDbService.getOngoingByStaffId('1234', '2021-07-01');
 
         expect(stub).toStrictEqual(expectedCall);
       });
@@ -105,65 +105,64 @@ describe('DynamoDBService', () => {
 
         expect(stub).toStrictEqual(expectedCall);
       });
-
-      context('builds correct request for GET', () => {
-        beforeEach(() => {
-          jest.resetModules();
-        });
-        // Mock once
-        let stub: any = null;
-        AWS.DynamoDB.DocumentClient.prototype.get = jest
-          .fn()
-          .mockImplementation((params: DocumentClient.Get) => {
-            return {
-              promise: () => {
-                stub = params;
-                return Promise.resolve([]);
-              }
-            };
-          });
-
-        it('for get', async () => {
-          const expectedCall = {
-            TableName: 'cvs-local-activities',
-            Key: {
-              id: '1234'
-            }
-          };
-          const dynamoDbService = new DynamoDBService();
-          await dynamoDbService.get({ id: '1234' });
-
-          expect(stub).toStrictEqual(expectedCall);
-        });
+    });
+  });
+  context('builds correct request for GET', () => {
+    beforeEach(() => {
+      jest.resetModules();
+    });
+    // Mock once
+    let stub: any = null;
+    AWS.DynamoDB.DocumentClient.prototype.get = jest
+      .fn()
+      .mockImplementation((params: DocumentClient.Get) => {
+        return {
+          promise: () => {
+            stub = params;
+            return Promise.resolve([]);
+          }
+        };
       });
 
-      context('builds correct request for SCAN', () => {
-        beforeEach(() => {
-          jest.resetModules();
-        });
-        // Mock once
-        let stub: any = null;
-        AWS.DynamoDB.DocumentClient.prototype.scan = jest
-          .fn()
-          .mockImplementation((params: DocumentClient.ScanInput) => {
-            return {
-              promise: () => {
-                stub = params;
-                return Promise.resolve([]);
-              }
-            };
-          });
+    it('for get', async () => {
+      const expectedCall = {
+        TableName: 'cvs-local-activities',
+        Key: {
+          id: '1234'
+        }
+      };
+      const dynamoDbService = new DynamoDBService();
+      await dynamoDbService.get({ id: '1234' });
 
-        it('for scan', async () => {
-          const expectedCall = {
-            TableName: 'cvs-local-activities'
-          };
-          const dynamoDbService = new DynamoDBService();
-          await dynamoDbService.scan();
+      expect(stub).toStrictEqual(expectedCall);
+    });
+  });
 
-          expect(stub).toStrictEqual(expectedCall);
-        });
+  context('builds correct request for SCAN', () => {
+    beforeEach(() => {
+      jest.resetModules();
+    });
+    // Mock once
+    let stub: any = null;
+    AWS.DynamoDB.DocumentClient.prototype.scan = jest
+      .fn()
+      .mockImplementation((params: DocumentClient.ScanInput) => {
+        return {
+          promise: () => {
+            stub = params;
+            return Promise.resolve([]);
+          }
+        };
       });
+
+    it('for scan', async () => {
+      const expectedCall = {
+        TableName: 'cvs-local-activities'
+      };
+      const dynamoDbService = new DynamoDBService();
+      await dynamoDbService.scan();
+
+      expect(stub).toStrictEqual(expectedCall);
     });
   });
 

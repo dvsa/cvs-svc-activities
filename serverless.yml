@@ -60,8 +60,6 @@ resources:
             AttributeType: S
           - AttributeName: startTime
             AttributeType: S
-          - AttributeName: activityDay
-            AttributeType: S
           - AttributeName: activityType
             AttributeType: S
         KeySchema:
@@ -91,28 +89,6 @@ resources:
             ProvisionedThroughput:
               ReadCapacityUnits: 1
               WriteCapacityUnits: 1
-          - IndexName: ActivityDayIndex
-            KeySchema:
-              - AttributeName: activityDay
-                KeyType: HASH
-              - AttributeName: startTime
-                KeyType: RANGE
-            Projection:
-              NonKeyAttributes:
-                - id
-                - activityType
-                - testStationEmail
-                - testStationType
-                - testerName
-                - startTime
-                - endTime
-              ProjectionType: INCLUDE
-            ProvisionedThroughput:
-              ReadCapacityUnits: 1
-              WriteCapacityUnits: 1
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
           - IndexName: ActivityTypeIndex
             KeySchema:
               - AttributeName: activityType
@@ -123,7 +99,10 @@ resources:
               ProjectionType: ALL
             ProvisionedThroughput:
               ReadCapacityUnits: 1
-              WriteCapacityUnits: 1         
+              WriteCapacityUnits: 1
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
 custom:
   serverless-offline:
     port: 3007

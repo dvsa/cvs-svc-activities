@@ -22,18 +22,16 @@ export class GetActivityService {
    */
   public async getActivities(params: IActivityParams): Promise<any> {
     try {
-      const { fromStartTime, toStartTime, activityType } = params && params;
-
+      const { fromStartTime, toStartTime, activityType } = params;
+      console.log("getActivities params in service layer", params);
       if (!(fromStartTime && toStartTime && activityType)) {
-        return new HTTPResponse(
-          400,
-          HTTPRESPONSE.BAD_REQUEST.concat(': ', HTTPRESPONSE.GET_ACTIVITY_REQUIRED_VALUES)
-        );
+        throw new HTTPResponse(400, HTTPRESPONSE.BAD_REQUEST);
       }
       const data = await this.dbClient.getActivities(params);
       if (!(data && data.length)) {
         throw new HTTPResponse(404, HTTPRESPONSE.NO_RESOURCES);
       }
+      console.log('data from getActivities', data)
       const ActivityFilter: ActivityFilters = new ActivityFilters();
       const result = ActivityFilter.returnOrderedActivities(data);
       return result;

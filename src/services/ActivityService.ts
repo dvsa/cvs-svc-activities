@@ -6,10 +6,10 @@ import { DocumentClient } from 'aws-sdk/lib/dynamodb/document_client'; // Only u
 
 import { DynamoDBService } from './DynamoDBService';
 import { IActivity } from '../models/Activity';
-import { ActivitySchema } from '../utils/validators/ActivitySchema';
-import { ActivityUpdateSchema } from '../utils/validators/ActivityUpdateSchema';
 import { HTTPResponse } from '../utils/HTTPResponse';
 import * as Constants from '../assets/enums';
+import { ActivitySchema } from '../models/ActivitySchema';
+import { ActivityUpdateSchema } from '../models/ActivityUpdateSchema';
 
 export class ActivityService {
   public readonly dbClient: DynamoDBService;

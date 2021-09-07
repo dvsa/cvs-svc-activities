@@ -1,23 +1,30 @@
-import { GetActivityService } from "./../services/GetActivitiesService";
-import { Context, Handler } from "aws-lambda";
-import { HTTPResponse } from "../utils/HTTPResponse";
-import {DynamoDBService} from "../services/DynamoDBService";
-import { HTTPRESPONSE } from "../assets/enums";
+import { GetActivityService } from './../services/GetActivitiesService';
+import { Context } from 'aws-lambda';
+import { HTTPResponse } from '../utils/HTTPResponse';
+import { DynamoDBService } from '../services/DynamoDBService';
+import { HTTPRESPONSE } from '../assets/enums';
 
+export async function getActivity(event: any, context?: Context): Promise<any> {
+  console.log('getActivites');
+  if (!(event && event.queryStringParameters)) {
+    return new HTTPResponse(400, HTTPRESPONSE.BAD_REQUEST);
+  }
 
-const getActivity: Handler = async (event: any, context?: Context): Promise<any> => {
-    if (!(event && event.queryStringParameters)) {
-        return new HTTPResponse(400, HTTPRESPONSE.BAD_REQUEST);
-    }
-
-    const activityService = new GetActivityService(new DynamoDBService());
-    return activityService.getActivities(event.queryStringParameters)
-        .then((data: any) => {
-            return new HTTPResponse(200, data);
-        })
-        .catch((error: HTTPResponse) => {
-            return error;
-        });
+  const activityService = new GetActivityService(new DynamoDBService());
+  const { fromStartTime, toStartTime, activityType, testStationPNumber, testerStaffId } =
+    event.queryStringParameters && event.queryStringParameters;
+  try {
+    console.log("getActivities params", event.queryStringParameters);
+    const data = await activityService
+      .getActivities({
+        fromStartTime,
+        toStartTime,
+        activityType,
+        testStationPNumber,
+        testerStaffId
+      });
+    return new HTTPResponse(200, data);
+  } catch (error) {
+    return error;
+  }
 };
-
-export { getActivity };
