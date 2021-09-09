@@ -25,14 +25,6 @@ export class DynamoDBService {
   }
 
   /**
-   * Scan the entire table and retrieve all data
-   * @returns Promise<PromiseResult<DocumentClient.ScanOutput, AWSError>>
-   */
-  public scan(): Promise<PromiseResult<DocumentClient.ScanOutput, AWSError>> {
-    return DynamoDBService.client.scan({ TableName: this.tableName }).promise();
-  }
-
-  /**
    * Retrieves the item with the given key
    * @param key - the key of the item you wish to fetch
    * @param attributes - optionally, you can request only a set of attributes
@@ -147,36 +139,6 @@ export class DynamoDBService {
     return DynamoDBService.client.delete(query).promise();
   }
 
-  /**
-   * Retrieves a list of batches containing results for the given keys
-   * @param keys - a list of keys you wish to retrieve
-   * @returns Promise<PromiseResult<BatchGetItemOutput, AWSError>>
-   */
-  public batchGet(
-    keys: DocumentClient.KeyList
-  ): Promise<PromiseResult<DocumentClient.BatchGetItemOutput, AWSError>[]> {
-    const keyList: DocumentClient.KeyList = keys.slice();
-    const keyBatches: DocumentClient.KeyList[] = [];
-
-    while (keyList.length > 0) {
-      keyBatches.push(keyList.splice(0, 100));
-    }
-
-    const promiseBatch: Promise<PromiseResult<DocumentClient.BatchGetItemOutput, AWSError>>[] =
-      keyBatches.map((batch: DocumentClient.KeyList) => {
-        const query: DocumentClient.BatchGetItemInput = {
-          RequestItems: {
-            [this.tableName]: {
-              Keys: batch
-            }
-          }
-        };
-
-        return DynamoDBService.client.batchGet(query).promise();
-      });
-
-    return Promise.all(promiseBatch);
-  }
 
   /**
    * Updates or creates the items provided, and returns a list of result batches
@@ -235,11 +197,9 @@ export class DynamoDBService {
    * @returns array of activities
    */
   private async queryAllData(params: any, allData: IActivity[] = []): Promise<IActivity[]> {
-    console.log('inside queryAllData');
-    const data: PromiseResult<DocumentClient.QueryOutput, AWSError> = await DynamoDBService.client
+     const data: PromiseResult<DocumentClient.QueryOutput, AWSError> = await DynamoDBService.client
       .query(params)
       .promise();
-    console.log('queryAllData', data);
     if (data.Items && data.Items.length > 0) {
       allData = [...allData, ...(data.Items as IActivity[])];
     }
@@ -247,7 +207,6 @@ export class DynamoDBService {
       params.ExclusiveStartKey = data.LastEvaluatedKey;
       return this.queryAllData(params, allData);
     } else {
-      console.log('all data is: ', allData)
       return allData;
     }
   }

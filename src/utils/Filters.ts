@@ -1,52 +1,8 @@
-import { isAfter, isBefore, isEqual } from 'date-fns';
 import { IActivity } from '../models/Activity';
 
 export class ActivityFilters {
   // tslint:disable-next-line: no-empty
   public constructor() {}
-
-  /**
-   * Filter activities by Start Time
-   * @param activities Array of activities
-   * @param params Query parameters
-   * @param option True = ifAfter | False = ifBefore
-   * @returns Array of Activities filtered by start time or end time
-   */
-  public filterActivitiesByStartTime(
-    activities: string[],
-    startTime: string,
-    option: boolean
-  ): string[] {
-    const activityArray: string[] = [];
-    activities.forEach((element: any) => {
-      switch (option) {
-        case true:
-          if (isAfter(element.startTime, startTime) || isEqual(element.startTime, startTime)) {
-            activityArray.push(element);
-          }
-          break;
-        case false:
-          if (isBefore(element.startTime, startTime) || isEqual(element.startTime, startTime)) {
-            activityArray.push(element);
-          }
-      }
-    });
-    return activityArray;
-  }
-
-  /**
-   * Filter activities by parameter
-   * @param activities Array of activities
-   * @param value Value of the @param field
-   * @param field activityType | testStationPNumber | testerStaffId
-   * @returns Array of Activities filtered by activityType | testStationPNumber | testerStaffId
-   */
-  public filterActivitiesByParameter(activities: string[], value: string | null, field: string) {
-    const filteredArrayOfActivities = activities.filter((element: any) => {
-      return element[field] === value;
-    });
-    return filteredArrayOfActivities;
-  }
 
   /**
    * Order Activities desc by Start Time

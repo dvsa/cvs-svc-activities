@@ -23,7 +23,6 @@ export class GetActivityService {
   public async getActivities(params: IActivityParams): Promise<any> {
     try {
       const { fromStartTime, toStartTime, activityType } = params;
-      console.log("getActivities params in service layer", params);
       if (!(fromStartTime && toStartTime && activityType)) {
         throw new HTTPResponse(400, HTTPRESPONSE.BAD_REQUEST);
       }
@@ -31,7 +30,6 @@ export class GetActivityService {
       if (!(data && data.length)) {
         throw new HTTPResponse(404, HTTPRESPONSE.NO_RESOURCES);
       }
-      console.log('data from getActivities', data)
       const ActivityFilter: ActivityFilters = new ActivityFilters();
       const result = ActivityFilter.returnOrderedActivities(data);
       return result;

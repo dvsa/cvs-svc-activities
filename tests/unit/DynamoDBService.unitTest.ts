@@ -138,34 +138,6 @@ describe('DynamoDBService', () => {
     });
   });
 
-  context('builds correct request for SCAN', () => {
-    beforeEach(() => {
-      jest.resetModules();
-    });
-    // Mock once
-    let stub: any = null;
-    AWS.DynamoDB.DocumentClient.prototype.scan = jest
-      .fn()
-      .mockImplementation((params: DocumentClient.ScanInput) => {
-        return {
-          promise: () => {
-            stub = params;
-            return Promise.resolve([]);
-          }
-        };
-      });
-
-    it('for scan', async () => {
-      const expectedCall = {
-        TableName: 'cvs-local-activities'
-      };
-      const dynamoDbService = new DynamoDBService();
-      await dynamoDbService.scan();
-
-      expect(stub).toStrictEqual(expectedCall);
-    });
-  });
-
   context('Update activities', () => {
     beforeEach(() => {
       jest.resetModules();

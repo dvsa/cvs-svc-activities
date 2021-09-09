@@ -14,7 +14,6 @@ export async function getActivity(event: any, context?: Context): Promise<any> {
   const { fromStartTime, toStartTime, activityType, testStationPNumber, testerStaffId } =
     event.queryStringParameters && event.queryStringParameters;
   try {
-    console.log("getActivities params", event.queryStringParameters);
     const data = await activityService
       .getActivities({
         fromStartTime,
