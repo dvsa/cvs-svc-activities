@@ -88,7 +88,6 @@ describe('DynamoDBService', () => {
           IndexName: 'ActivityTypeIndex',
           KeyConditionExpression:
             'activityType = :activityType AND startTime BETWEEN :fromStartTime AND :toStartTime',
-          FilterExpression: '',
           ExpressionAttributeValues: {
             ':activityType': 'visit',
             ':fromStartTime': '2021-01-01',

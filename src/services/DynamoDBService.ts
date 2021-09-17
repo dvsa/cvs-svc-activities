@@ -51,7 +51,7 @@ export class DynamoDBService {
    * @param filterParams - parameters used for filtering data in the database
    * @returns Promise<IActivity[]> an array of activities
    */
-  public getActivities(filterParams: IActivityParams): Promise<IActivity[]> {
+  public async getActivities(filterParams: IActivityParams): Promise<IActivity[]> {
     const { activityType, fromStartTime, toStartTime } = filterParams;
     const keyExpressionAttribute = {
       [':activityType']: activityType,
@@ -68,13 +68,17 @@ export class DynamoDBService {
       IndexName: 'ActivityTypeIndex',
       KeyConditionExpression:
         'activityType = :activityType AND startTime BETWEEN :fromStartTime AND :toStartTime',
-      FilterExpression: this.getOptionalFilters('', filterParams),
       ExpressionAttributeValues: {
         ...expressionAttributeValues
       }
     };
-    console.log('params for getActivity', params)
-    return this.queryAllData(params);
+    const filterExpression = this.getOptionalFilters('', filterParams);
+    if (filterExpression) {
+      (params as any).FilterExpression = filterExpression;
+    }
+    console.log('params for getActivity', params);
+    const result = await this.queryAllData(params);
+    return result;
   }
 
   /**
@@ -139,7 +143,6 @@ export class DynamoDBService {
     return DynamoDBService.client.delete(query).promise();
   }
 
-
   /**
    * Updates or creates the items provided, and returns a list of result batches
    * @param items - items to add or update
@@ -197,7 +200,7 @@ export class DynamoDBService {
    * @returns array of activities
    */
   private async queryAllData(params: any, allData: IActivity[] = []): Promise<IActivity[]> {
-     const data: PromiseResult<DocumentClient.QueryOutput, AWSError> = await DynamoDBService.client
+    const data: PromiseResult<DocumentClient.QueryOutput, AWSError> = await DynamoDBService.client
       .query(params)
       .promise();
     if (data.Items && data.Items.length > 0) {

@@ -14,16 +14,15 @@ export async function getActivity(event: any, context?: Context): Promise<any> {
   const { fromStartTime, toStartTime, activityType, testStationPNumber, testerStaffId } =
     event.queryStringParameters && event.queryStringParameters;
   try {
-    const data = await activityService
-      .getActivities({
-        fromStartTime,
-        toStartTime,
-        activityType,
-        testStationPNumber,
-        testerStaffId
-      });
+    const data = await activityService.getActivities({
+      fromStartTime,
+      toStartTime,
+      activityType,
+      testStationPNumber,
+      testerStaffId
+    });
     return new HTTPResponse(200, data);
   } catch (error) {
     return error;
   }
-};
+}
