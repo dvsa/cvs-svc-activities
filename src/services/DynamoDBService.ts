@@ -78,7 +78,6 @@ export class DynamoDBService {
     }
     console.log('params for getActivity', params);
     const result = await this.queryAllData(params);
-    console.log('result for getActivities in dataAccess', result)
     return result;
   }
 

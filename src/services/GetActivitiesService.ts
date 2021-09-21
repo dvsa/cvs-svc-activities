@@ -28,12 +28,10 @@ export class GetActivityService {
       }
       const data = await this.dbClient.getActivities(params);
       if (!(data && data.length)) {
-        console.log('No activities found for params: ', params)
         throw new HTTPResponse(404, HTTPRESPONSE.NO_RESOURCES);
       }
       const ActivityFilter: ActivityFilters = new ActivityFilters();
       const result = ActivityFilter.returnOrderedActivities(data);
-      console.log('activities found', result);
       return result;
     } catch (error) {
       if (error instanceof HTTPResponse) {
