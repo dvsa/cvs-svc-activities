@@ -77,8 +77,13 @@ export class DynamoDBService {
       (params as any).FilterExpression = filterExpression;
     }
     console.log('params for getActivity', params);
-    const result = await this.queryAllData(params);
-    return result;
+    try {
+      const result = await this.queryAllData(params);
+      return result;
+    } catch (err) {
+      console.error('error on getActivities', err);
+      throw err;
+    }
   }
 
   /**
