@@ -5,7 +5,6 @@ import { DynamoDBService } from '../services/DynamoDBService';
 import { HTTPRESPONSE } from '../assets/enums';
 
 export async function getActivity(event: any, context?: Context): Promise<any> {
-  console.log('getActivites');
   if (!(event && event.queryStringParameters)) {
     return new HTTPResponse(400, HTTPRESPONSE.BAD_REQUEST);
   }

@@ -3,6 +3,7 @@ import { HTTPResponse } from '../utils/HTTPResponse';
 import { DynamoDBService } from './DynamoDBService';
 import { HTTPRESPONSE } from '../assets/enums';
 import { IActivityParams } from '../models/Activity';
+import { isValid } from 'date-fns';
 
 export class GetActivityService {
   public readonly dbClient: DynamoDBService;
@@ -23,7 +24,11 @@ export class GetActivityService {
   public async getActivities(params: IActivityParams): Promise<any> {
     try {
       const { fromStartTime, toStartTime, activityType } = params;
-      if (!(fromStartTime && toStartTime && activityType)) {
+      if (
+        !(fromStartTime && toStartTime && activityType &&
+        isValid(new Date(fromStartTime)) &&
+        isValid(new Date(toStartTime)))
+      ) {
         throw new HTTPResponse(400, HTTPRESPONSE.BAD_REQUEST);
       }
       const data = await this.dbClient.getActivities(params);
