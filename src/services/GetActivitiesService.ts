@@ -25,13 +25,9 @@ export class GetActivityService {
     try {
       const { fromStartTime, toStartTime, activityType } = params;
       if (
-        !(
-          fromStartTime &&
-          toStartTime &&
-          activityType &&
-          isValid(new Date(fromStartTime)) &&
-          isValid(new Date(toStartTime))
-        )
+        !(fromStartTime && toStartTime && activityType &&
+        isValid(new Date(fromStartTime)) &&
+        isValid(new Date(toStartTime)))
       ) {
         throw new HTTPResponse(400, HTTPRESPONSE.BAD_REQUEST);
       }
