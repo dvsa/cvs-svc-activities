@@ -29,7 +29,6 @@ describe('openVisitCheck Function', () => {
           testerStaffId: ' '
         }
       };
-      // const svcSpy = jest.spyOn(OpenVisitService.prototype, "checkOpenVisit").mockResolvedValue(true)
       expect.assertions(2);
 
       const output: HTTPResponse = await openVisitCheck(event, ctx, () => {
@@ -46,7 +45,6 @@ describe('openVisitCheck Function', () => {
           testerStaffId: 'undefined'
         }
       };
-      // const svcSpy = jest.spyOn(OpenVisitService.prototype, "checkOpenVisit").mockResolvedValue(true)
       expect.assertions(2);
 
       const output: HTTPResponse = await openVisitCheck(event, ctx, () => {
@@ -63,7 +61,6 @@ describe('openVisitCheck Function', () => {
           testerStaffId: 'null'
         }
       };
-      // const svcSpy = jest.spyOn(OpenVisitService.prototype, "checkOpenVisit").mockResolvedValue(true)
       expect.assertions(2);
 
       const output: HTTPResponse = await openVisitCheck(event, ctx, () => {
@@ -80,7 +77,6 @@ describe('openVisitCheck Function', () => {
           testerStaffId: undefined
         }
       };
-      // const svcSpy = jest.spyOn(OpenVisitService.prototype, "checkOpenVisit").mockResolvedValue(true)
       expect.assertions(2);
 
       const output: HTTPResponse = await openVisitCheck(event, ctx, () => {
@@ -97,7 +93,6 @@ describe('openVisitCheck Function', () => {
           testerStaffId: null
         }
       };
-      // const svcSpy = jest.spyOn(OpenVisitService.prototype, "checkOpenVisit").mockResolvedValue(true)
       expect.assertions(2);
 
       const output: HTTPResponse = await openVisitCheck(event, ctx, () => {
