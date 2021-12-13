@@ -96,7 +96,10 @@ export class ActivityService {
    * @param endTime - end time of the activity to end
    * @returns Promise<{wasVisitAlreadyClosed: boolean}>
    */
-  public async endActivity(id: string, endTime?: string): Promise<{ wasVisitAlreadyClosed: boolean }> {
+  public async endActivity(
+    id: string,
+    endTime?: string
+  ): Promise<{ wasVisitAlreadyClosed: boolean }> {
     try {
       const result: DocumentClient.GetItemOutput = await this.dbClient.get({ id });
 
@@ -113,10 +116,12 @@ export class ActivityService {
       const activity: IActivity = result.Item as IActivity;
 
       try {
-        activity.endTime = (endTime) ? new Date(endTime).toISOString() : new Date().toISOString();
+        activity.endTime = endTime ? new Date(endTime).toISOString() : new Date().toISOString();
       } catch (e) {
         activity.endTime = new Date().toISOString();
-        console.error(`${e}\nUnable to convert (${endTime}) to ISOString, using - ${activity.endTime}`);
+        console.error(
+          `${e}\nUnable to convert (${endTime}) to ISOString, using - ${activity.endTime}`
+        );
       }
 
       await this.dbClient.put(activity);

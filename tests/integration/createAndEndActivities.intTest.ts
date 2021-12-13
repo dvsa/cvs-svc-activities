@@ -222,7 +222,7 @@ describe('PUT /activities/:id/autoclose', () => {
     it('should respond with HTTP 404', () => {
       return request
         .put(`/activities/bad_id/autoclose`)
-        .send({ endTime: lastActivityDate})
+        .send({ endTime: lastActivityDate })
         .expect('access-control-allow-origin', '*')
         .expect('access-control-allow-credentials', 'true')
         .expect(404);
@@ -233,7 +233,7 @@ describe('PUT /activities/:id/autoclose', () => {
     it('should respond with HTTP 200 (wasVisitAlreadyClosed = false)', () => {
       return request
         .put(`/activities/${postedActivity2.id}/autoclose`)
-        .send({ endTime: lastActivityDate})
+        .send({ endTime: lastActivityDate })
         .expect('access-control-allow-origin', '*')
         .expect('access-control-allow-credentials', 'true')
         .expect(200, {
@@ -246,7 +246,7 @@ describe('PUT /activities/:id/autoclose', () => {
     it('should respond with HTTP 200 (wasVisitAlreadyClosed = true)', () => {
       return request
         .put(`/activities/${postedActivity2.id}/autoclose`)
-        .send({ endTime: lastActivityDate})
+        .send({ endTime: lastActivityDate })
         .expect('access-control-allow-origin', '*')
         .expect('access-control-allow-credentials', 'true')
         .expect(200, {
@@ -259,7 +259,7 @@ describe('PUT /activities/:id/autoclose', () => {
     it('should respond with HTTP 200 (wasVisitAlreadyClosed = false)', () => {
       return request
         .put(`/activities/${postedActivity3.id}/autoclose`)
-        .send({ endTime: invalidEndTime})
+        .send({ endTime: invalidEndTime })
         .expect('access-control-allow-origin', '*')
         .expect('access-control-allow-credentials', 'true')
         .expect(200, {

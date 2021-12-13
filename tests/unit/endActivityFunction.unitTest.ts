@@ -26,9 +26,13 @@ describe('endActivity Function', () => {
         ActivityService.prototype.endActivity = jest
           .fn()
           .mockResolvedValue({ wasVisitAlreadyClosed: false });
-        const resp: HTTPResponse = await endActivity({ pathParameters: { id: 1 }, body: { endTime: validEndTime}}, ctx, () => {
-          return;
-        });
+        const resp: HTTPResponse = await endActivity(
+          { pathParameters: { id: 1 }, body: { endTime: validEndTime } },
+          ctx,
+          () => {
+            return;
+          }
+        );
         expect(resp).toBeInstanceOf(HTTPResponse);
         expect(resp.statusCode).toEqual(200);
         expect(resp.body).toEqual(JSON.stringify({ wasVisitAlreadyClosed: false }));
@@ -40,9 +44,13 @@ describe('endActivity Function', () => {
         ActivityService.prototype.endActivity = jest
           .fn()
           .mockResolvedValue({ wasVisitAlreadyClosed: false });
-        const resp: HTTPResponse = await endActivity({ pathParameters: { id: 1 }, body: { test: validEndTime}}, ctx, () => {
-          return;
-        });
+        const resp: HTTPResponse = await endActivity(
+          { pathParameters: { id: 1 }, body: { test: validEndTime } },
+          ctx,
+          () => {
+            return;
+          }
+        );
         expect(resp).toBeInstanceOf(HTTPResponse);
         expect(resp.statusCode).toEqual(200);
         expect(resp.body).toEqual(JSON.stringify({ wasVisitAlreadyClosed: false }));
