@@ -9,6 +9,11 @@ functions:
       path: /activities/{+proxy}
       proxy: :id/end
       function: endActivity
+  - endActivity:
+      method: PUT
+      path: /activities/{+proxy}
+      proxy: :id/autoclose
+      function: endActivity
   - updateActivity:
       method: PUT
       path: /activities/update

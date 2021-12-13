@@ -90,12 +90,13 @@ export class ActivityService {
   }
 
   /**
-   * Ends an activity with the given id
-   * if the visit was already closed, the response will be 200 and the flag wasVisitAlreadyClosed will be set to true
+   * Ends an activity with the given id, endTime value used as activity end time if provided.
+   * If the visit was already closed, the response will be 200 and the flag wasVisitAlreadyClosed will be set to true
    * @param id - id of the activity to end
+   * @param endTime - end time of the activity to end
    * @returns Promise<{wasVisitAlreadyClosed: boolean}>
    */
-  public async endActivity(id: string): Promise<{ wasVisitAlreadyClosed: boolean }> {
+  public async endActivity(id: string, endTime?: string): Promise<{ wasVisitAlreadyClosed: boolean }> {
     try {
       const result: DocumentClient.GetItemOutput = await this.dbClient.get({ id });
 
@@ -110,7 +111,14 @@ export class ActivityService {
       }
 
       const activity: IActivity = result.Item as IActivity;
-      activity.endTime = new Date().toISOString();
+
+      try {
+        activity.endTime = (endTime) ? new Date(endTime).toISOString() : new Date().toISOString();
+      } catch (e) {
+        activity.endTime = new Date().toISOString();
+        console.error(`${e}\nUnable to convert (${endTime}) to ISOString, using - ${activity.endTime}`);
+      }
+
       await this.dbClient.put(activity);
 
       return { wasVisitAlreadyClosed: false };
