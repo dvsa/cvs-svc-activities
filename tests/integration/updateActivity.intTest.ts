@@ -37,13 +37,13 @@ describe('PUT /activities/update', () => {
 
   context('when a non-existing activity is updated', () => {
     const payload: any = [{ id: 'non-existing-id', waitReason: ['Break'], notes: 'sample' }];
-    it('should respond with HTTP 404', () => {
+    it('should respond with HTTP 204', () => {
       return request
         .put(`/activities/update`)
         .send(payload)
         .expect('access-control-allow-origin', '*')
         .expect('access-control-allow-credentials', 'true')
-        .expect(404);
+        .expect(204);
     });
   });
 

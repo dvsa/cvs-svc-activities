@@ -148,7 +148,7 @@ export class ActivityService {
         .then(async (result: DocumentClient.GetItemOutput): Promise<void> => {
           // Result checks
           if (result.Item === undefined) {
-            throw new HTTPResponse(204, { error: Constants.HTTPRESPONSE.NO_CONTENT });
+            throw new HTTPResponse(204, { error: Constants.HTTPRESPONSE.NOT_EXIST });
           }
 
           const dbActivity: IActivity = result.Item as IActivity;

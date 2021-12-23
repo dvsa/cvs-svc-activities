@@ -108,13 +108,13 @@ describe('PUT /activities/:id/end', () => {
   const request = supertest(`http://localhost:${config.serverless.port}`);
 
   context('when a non-existing activity is ended', () => {
-    it('should respond with HTTP 404', () => {
+    it('should respond with HTTP 204', () => {
       return request
         .put(`/activities/bad_id/end`)
         .send({})
         .expect('access-control-allow-origin', '*')
         .expect('access-control-allow-credentials', 'true')
-        .expect(404);
+        .expect('204');
     });
   });
 

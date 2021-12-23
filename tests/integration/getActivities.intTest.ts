@@ -63,7 +63,7 @@ describe('GET /activities/details', () => {
   });
   context('when all the parameters were passed', () => {
     context('but no data received from the database', () => {
-      it('should respond with HTTP 404', () => {
+      it('should respond with HTTP 204', () => {
         queryEventParams.fromStartTime = '2010-02-12';
         queryEventParams.toStartTime = '2011-02-12';
         return request
@@ -81,7 +81,7 @@ describe('GET /activities/details', () => {
           )
           .expect('access-control-allow-origin', '*')
           .expect('access-control-allow-credentials', 'true')
-          .expect(404);
+          .expect(204);
       });
     });
   });

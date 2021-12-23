@@ -23,8 +23,8 @@ describe('getActivities', () => {
 
       return getActivityService.getActivities(params).catch((error: HTTPResponse) => {
         const body: any = JSON.parse(error.body);
-        expect(error.statusCode).toEqual(404);
-        expect(JSON.parse(body)).toEqual('No resources match the search criteria');
+        expect(error.statusCode).toEqual(204);
+        expect(JSON.parse(body)).toEqual('No Content');
       });
     });
   });
