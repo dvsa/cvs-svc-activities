@@ -100,8 +100,8 @@ export class ActivityService {
       const result: DocumentClient.GetItemOutput = await this.dbClient.get({ id });
 
       if (result.Item === undefined) {
-        console.log(`Error occurred: ${Constants.HTTPRESPONSE.NOT_EXIST} with statusCode: 404`);
-        throw new HTTPResponse(404, { error: Constants.HTTPRESPONSE.NOT_EXIST });
+        console.log(`Error occurred: ${Constants.HTTPRESPONSE.NO_CONTENT} with statusCode: 204`);
+        throw new HTTPResponse(204, { error: Constants.HTTPRESPONSE.NO_CONTENT });
       }
 
       if (result.Item.endTime !== null) {
@@ -148,7 +148,7 @@ export class ActivityService {
         .then(async (result: DocumentClient.GetItemOutput): Promise<void> => {
           // Result checks
           if (result.Item === undefined) {
-            throw new HTTPResponse(404, { error: Constants.HTTPRESPONSE.NOT_EXIST });
+            throw new HTTPResponse(204, { error: Constants.HTTPRESPONSE.NO_CONTENT });
           }
 
           const dbActivity: IActivity = result.Item as IActivity;

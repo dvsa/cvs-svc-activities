@@ -37,7 +37,7 @@ export class GetActivityService {
       }
       const data = await this.dbClient.getActivities(params);
       if (!(data && data.length)) {
-        throw new HTTPResponse(404, HTTPRESPONSE.NO_RESOURCES);
+        throw new HTTPResponse(204, HTTPRESPONSE.NO_CONTENT);
       }
       const ActivityFilter: ActivityFilters = new ActivityFilters();
       const result = ActivityFilter.returnOrderedActivities(data);
