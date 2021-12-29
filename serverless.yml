@@ -35,9 +35,6 @@ functions:
           path: activities/{id}/end
           method: put
       - http:
-          path: activities/{id}/autoclose
-          method: put
-      - http:
           path: activities/update
           method: put
       - http:
