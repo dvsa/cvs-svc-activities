@@ -6,8 +6,6 @@ import { HTTPRESPONSE } from '../../src/assets/enums';
 describe('endActivity', () => {
   let activityService: any;
   let activityId: string = '5e4bd304-446e-4678-8289-d34fca9256e9'; // Non-existing ID
-  const validEndTime: string = '2020-03-05T13:29:45.938Z';
-  const invalidEndTime: string = 'invalidEndTime';
   // @ts-ignore
   beforeEach(() => (activityService = new ActivityService(new DynamoDBMockService())));
   afterEach(() => jest.clearAllMocks());
@@ -25,7 +23,7 @@ describe('endActivity', () => {
     });
   });
 
-  context('when the activity has successfully ended no end time provided', () => {
+  context('when the activity has successfully ended', () => {
     it(`should return wasVisitAlreadyClosed set to false when endActivity is called`, async () => {
       // Create the activity
       const payload: any = {
@@ -44,62 +42,6 @@ describe('endActivity', () => {
       expect.assertions(1);
       return activityService
         .endActivity(activityId)
-        .then((response: { wasVisitAlreadyClosed: boolean }) => {
-          expect(response.wasVisitAlreadyClosed).toBe(false);
-        })
-        .catch((_: HTTPResponse) => {
-          fail('test should not fail');
-        });
-    });
-  });
-
-  context('when the activity has successfully ended with valid end time provided', () => {
-    it(`should return wasVisitAlreadyClosed set to false when endActivity is called`, async () => {
-      // Create the activity
-      const payload: any = {
-        activityType: 'visit',
-        testStationName: 'Rowe, Wunsch and Wisoky',
-        testStationPNumber: '87-1369569',
-        testStationEmail: 'teststationname@dvsa.gov.uk',
-        testStationType: 'gvts',
-        testerName: 'Gica',
-        testerStaffId: '132',
-        testerEmail: 'tester@dvsa.gov.uk'
-      };
-
-      activityId = (await activityService.createActivity(payload)).id;
-
-      expect.assertions(1);
-      return activityService
-        .endActivity(activityId, validEndTime)
-        .then((response: { wasVisitAlreadyClosed: boolean }) => {
-          expect(response.wasVisitAlreadyClosed).toBe(false);
-        })
-        .catch((_: HTTPResponse) => {
-          fail('test should not fail');
-        });
-    });
-  });
-
-  context('when the activity has successfully ended with invalid end time provided', () => {
-    it(`should return wasVisitAlreadyClosed set to false when endActivity is called`, async () => {
-      // Create the activity
-      const payload: any = {
-        activityType: 'visit',
-        testStationName: 'Rowe, Wunsch and Wisoky',
-        testStationPNumber: '87-1369569',
-        testStationEmail: 'teststationname@dvsa.gov.uk',
-        testStationType: 'gvts',
-        testerName: 'Gica',
-        testerStaffId: '132',
-        testerEmail: 'tester@dvsa.gov.uk'
-      };
-
-      activityId = (await activityService.createActivity(payload)).id;
-
-      expect.assertions(1);
-      return activityService
-        .endActivity(activityId, invalidEndTime)
         .then((response: { wasVisitAlreadyClosed: boolean }) => {
           expect(response.wasVisitAlreadyClosed).toBe(false);
         })

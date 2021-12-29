@@ -9,10 +9,9 @@ const endActivity: Handler = async (
 ): Promise<APIGatewayProxyResult> => {
   const activityService = new ActivityService(new DynamoDBService());
   const id: string = event.pathParameters.id;
-  const endTime: string = event.body && event.body.endTime ? event.body.endTime : null;
 
   return activityService
-    .endActivity(id, endTime)
+    .endActivity(id)
     .then((wasVisitAlreadyClosed) => {
       return new HTTPResponse(200, wasVisitAlreadyClosed);
     })
