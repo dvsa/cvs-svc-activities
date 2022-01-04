@@ -114,7 +114,7 @@ describe('PUT /activities/:id/end', () => {
         .send({})
         .expect('access-control-allow-origin', '*')
         .expect('access-control-allow-credentials', 'true')
-        .expect('204');
+        .expect(204);
     });
   });
 
