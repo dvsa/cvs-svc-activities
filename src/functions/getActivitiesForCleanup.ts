@@ -20,10 +20,12 @@ const getActivitiesForCleanup: Handler = async (
       toStartTime,
       activityType
     });
-    if (data === null){
+    if (data === null) {
       return new HTTPResponse(400, HTTPRESPONSE.BAD_REQUEST);
     }
-    return data.length === 0 ? new HTTPResponse(204, HTTPRESPONSE.NO_RESOURCES) : new HTTPResponse(200, data);
+    return data.length === 0
+      ? new HTTPResponse(204, HTTPRESPONSE.NO_RESOURCES)
+      : new HTTPResponse(200, data);
   } catch (error) {
     console.error(error);
     return error as HTTPResponse;

@@ -3,13 +3,13 @@ import { Context } from 'aws-lambda';
 import { HTTPResponse } from '../utils/HTTPResponse';
 import { DynamoDBService } from '../services/DynamoDBService';
 import { HTTPRESPONSE } from '../assets/enums';
-import {IActivity} from "../models/Activity";
+import { IActivity } from '../models/Activity';
 
 export async function getActivity(event: any, context?: Context): Promise<any> {
   if (!(event && event.queryStringParameters)) {
     return new HTTPResponse(400, HTTPRESPONSE.BAD_REQUEST);
   }
-  console.log('in function')
+  console.log('in function');
   const activityService = new GetActivityService(new DynamoDBService());
   const { fromStartTime, toStartTime, activityType, testStationPNumber, testerStaffId } =
     event.queryStringParameters && event.queryStringParameters;
@@ -21,10 +21,12 @@ export async function getActivity(event: any, context?: Context): Promise<any> {
       testStationPNumber,
       testerStaffId
     });
-    if (data === null){
+    if (data === null) {
       return new HTTPResponse(400, HTTPRESPONSE.BAD_REQUEST);
     }
-   return data.length === 0 ? new HTTPResponse(204, HTTPRESPONSE.NO_RESOURCES) : new HTTPResponse(200, data);
+    return data.length === 0
+      ? new HTTPResponse(204, HTTPRESPONSE.NO_RESOURCES)
+      : new HTTPResponse(200, data);
   } catch (error) {
     return error as HTTPResponse;
   }

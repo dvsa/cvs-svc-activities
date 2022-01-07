@@ -1,9 +1,9 @@
-import {ActivityFilters} from './../utils/Filters';
-import {HTTPResponse} from '../utils/HTTPResponse';
-import {DynamoDBService} from './DynamoDBService';
-import {HTTPRESPONSE} from '../assets/enums';
-import {IActivity, IActivityParams} from '../models/Activity';
-import {isValid} from 'date-fns';
+import { ActivityFilters } from './../utils/Filters';
+import { HTTPResponse } from '../utils/HTTPResponse';
+import { DynamoDBService } from './DynamoDBService';
+import { HTTPRESPONSE } from '../assets/enums';
+import { IActivity, IActivityParams } from '../models/Activity';
+import { isValid } from 'date-fns';
 
 export class GetActivityService {
   public readonly dbClient: DynamoDBService;
@@ -23,7 +23,7 @@ export class GetActivityService {
    */
   public async getActivities(params: IActivityParams): Promise<any> {
     try {
-      console.log('in service')
+      console.log('in service');
       const { fromStartTime, toStartTime, activityType } = params;
       if (
         !(
@@ -34,13 +34,13 @@ export class GetActivityService {
           isValid(new Date(toStartTime))
         )
       ) {
-        console.log('in 400 when start time gone')
-        return null
+        console.log('in 400 when start time gone');
+        return null;
         // return new HTTPResponse(400, HTTPRESPONSE.BAD_REQUEST);
       }
       const data: IActivity[] = await this.dbClient.getActivities(params);
       if (!(data && data.length)) {
-        return data
+        return data;
       }
       const ActivityFilter: ActivityFilters = new ActivityFilters();
       return ActivityFilter.returnOrderedActivities(data);
