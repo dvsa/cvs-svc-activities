@@ -100,8 +100,8 @@ export class ActivityService {
       const result: DocumentClient.GetItemOutput = await this.dbClient.get({ id });
 
       if (result.Item === undefined) {
-        console.log(`Error occurred: ${Constants.HTTPRESPONSE.NO_CONTENT} with statusCode: 204`);
-        throw new HTTPResponse(204, { error: Constants.HTTPRESPONSE.NO_CONTENT });
+        console.log(`Error occurred: ${Constants.HTTPRESPONSE.NO_RESOURCES} with statusCode: 204`);
+        throw new HTTPResponse(204, { error: Constants.HTTPRESPONSE.NO_RESOURCES });
       }
 
       if (result.Item.endTime !== null) {

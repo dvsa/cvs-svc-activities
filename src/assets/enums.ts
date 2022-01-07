@@ -1,6 +1,5 @@
 export enum HTTPRESPONSE {
   NO_RESOURCES = 'No resources match the search criteria',
-  NO_CONTENT = 'No Content',
   BAD_REQUEST = 'Bad Request',
   NOT_EXIST = 'Activity id does not exist',
   PARENT_ID_NOT_EXIST = 'Parent id does not exist',

@@ -19,12 +19,9 @@ describe('getActivities', () => {
         toStartTime: '2020-02-12',
         activityType: 'visit'
       };
-      expect.assertions(2);
-
       return getActivityService.getActivities(params).catch((error: HTTPResponse) => {
-        const body: any = JSON.parse(error.body);
+        expect.assertions(1);
         expect(error.statusCode).toEqual(204);
-        expect(JSON.parse(body)).toEqual('No Content');
       });
     });
   });

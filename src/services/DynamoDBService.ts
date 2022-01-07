@@ -2,11 +2,11 @@
 const AWSXRay = require('aws-xray-sdk');
 // tslint:disable-next-line: no-var-requires
 const AWS = AWSXRay.captureAWS(require('aws-sdk'));
-import { AWSError } from 'aws-sdk'; // Only used as a type, so not wrapped by XRay
-import { DocumentClient } from 'aws-sdk/lib/dynamodb/document_client'; // Only used as a type, so not wrapped by XRay
-import { PromiseResult } from 'aws-sdk/lib/request'; // Only used as a type, so not wrapped by XRay
-import { Configuration } from '../utils/Configuration';
-import { IActivity, IActivityParams } from '../models/Activity';
+import {AWSError} from 'aws-sdk'; // Only used as a type, so not wrapped by XRay
+import {DocumentClient} from 'aws-sdk/lib/dynamodb/document_client'; // Only used as a type, so not wrapped by XRay
+import {PromiseResult} from 'aws-sdk/lib/request'; // Only used as a type, so not wrapped by XRay
+import {Configuration} from '../utils/Configuration';
+import {IActivity, IActivityParams} from '../models/Activity';
 
 export class DynamoDBService {
   private static client: DocumentClient;
@@ -78,8 +78,7 @@ export class DynamoDBService {
     }
     console.log('params for getActivity', params);
     try {
-      const result = await this.queryAllData(params);
-      return result;
+      return await this.queryAllData(params);
     } catch (err) {
       console.error('error on getActivities', err);
       throw err;
