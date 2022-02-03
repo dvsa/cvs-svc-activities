@@ -7,7 +7,7 @@ import { HTTPRESPONSE } from '../assets/enums';
 const openVisitCheck: Handler = async (event: any): Promise<any> => {
   const staffID = event.queryStringParameters?.testerStaffId;
 
-  if (!staffID) {
+  if (!staffID || staffID.trim().length === 0 || staffID === 'undefined' || staffID === 'null') {
     return new HTTPResponse(400, HTTPRESPONSE.BAD_REQUEST);
   }
 
