@@ -23,7 +23,7 @@ export class GetActivityService {
    */
   public async getActivities(params: IActivityParams): Promise<any> {
     try {
-      const { fromStartTime, toStartTime, activityType } = params;
+      const { fromStartTime, toStartTime, activityType, onlyOpenActivities } = params;
       if (
         !(
           fromStartTime &&
@@ -31,7 +31,7 @@ export class GetActivityService {
           activityType &&
           isValid(new Date(fromStartTime)) &&
           isValid(new Date(toStartTime))
-        )
+        ) && (!onlyOpenActivities)
       ) {
         throw new HTTPResponse(400, HTTPRESPONSE.BAD_REQUEST);
       }
