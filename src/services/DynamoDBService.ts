@@ -1,4 +1,6 @@
 // tslint:disable-next-line: no-var-requires
+import {subHours, subYears} from "date-fns";
+
 const AWSXRay = require('aws-xray-sdk');
 // tslint:disable-next-line: no-var-requires
 const AWS = AWSXRay.captureAWS(require('aws-sdk'));
@@ -53,29 +55,57 @@ export class DynamoDBService {
    */
   public async getActivities(filterParams: IActivityParams): Promise<IActivity[]> {
     const { activityType, fromStartTime, toStartTime } = filterParams;
-    const keyExpressionAttribute = {
-      [':activityType']: activityType,
-      [':fromStartTime']: fromStartTime,
-      [':toStartTime']: toStartTime
-    };
+
+    let keyExpressionAttribute;
+
+    if (filterParams.onlyOpenActivities) {
+      keyExpressionAttribute = {
+        [':activityType']: activityType,
+        [':fromStartTime']: subYears(Date.now(),10).toISOString() };
+    } else {
+      keyExpressionAttribute = {
+        [':activityType']: activityType,
+        [':fromStartTime']: fromStartTime,
+        [':toStartTime']: toStartTime
+      };
+    }
+
     const expressionAttributeValues = Object.assign(
       {},
       keyExpressionAttribute,
       ...this.mapOptionalFilterValues(filterParams)
     );
-    const params = {
-      TableName: this.tableName,
-      IndexName: 'ActivityTypeIndex',
-      KeyConditionExpression:
-        'activityType = :activityType AND startTime BETWEEN :fromStartTime AND :toStartTime',
-      ExpressionAttributeValues: {
-        ...expressionAttributeValues
+
+    let params;
+
+    if (filterParams.onlyOpenActivities) {
+      params = {
+        TableName: this.tableName,
+        IndexName: 'ActivityTypeIndex',
+        KeyConditionExpression: 'activityType = :activityType AND startTime >= :fromStartTime',
+        ExpressionAttributeValues: {
+          ...expressionAttributeValues
+        },
+        ConditionExpression: 'attribute_not_exists(endTime)'
+      };
+    } else {
+      params = {
+        TableName: this.tableName,
+        IndexName: 'ActivityTypeIndex',
+        KeyConditionExpression:
+          'activityType = :activityType AND startTime BETWEEN :fromStartTime AND :toStartTime',
+        ExpressionAttributeValues: {
+          ...expressionAttributeValues
+        }
+      };
+
+      const filterExpression = this.getOptionalFilters('', filterParams);
+
+      if (filterExpression) {
+        (params as any).FilterExpression = filterExpression;
       }
-    };
-    const filterExpression = this.getOptionalFilters('', filterParams);
-    if (filterExpression) {
-      (params as any).FilterExpression = filterExpression;
     }
+
     console.log('params for getActivity', params);
     try {
       const result = await this.queryAllData(params);
