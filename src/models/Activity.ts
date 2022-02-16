@@ -38,5 +38,5 @@ export interface IActivityParams {
   activityType?: string;
   testStationPNumber?: string;
   testerStaffId?: string;
-  onlyOpenActivities?: boolean;
+  isOpen?: boolean;
 }

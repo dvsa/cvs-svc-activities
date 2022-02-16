@@ -14,12 +14,13 @@ const getActivitiesForCleanup: Handler = async (
 
   const activityService = new GetActivityService(new DynamoDBService());
   try {
-    const { fromStartTime, toStartTime, activityType, onlyOpenActivities } = event.queryStringParameters;
+    // isOpen boolean is used to determine if there is no endTime on the activity
+    const { fromStartTime, toStartTime, activityType, isOpen } = event.queryStringParameters;
     const data = await activityService.getActivities({
       fromStartTime,
       toStartTime,
       activityType,
-      onlyOpenActivities
+      isOpen
     });
     return new HTTPResponse(200, data);
   } catch (error) {

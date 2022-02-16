@@ -16,9 +16,8 @@ describe('getActivitiesForCleanup Function', () => {
         const resp: HTTPResponse = await getActivitiesForCleanup(
           {
             queryStringParameters: {
-              fromStartTime: '2020-07-22',
-              toStartTime: '2020-07-22',
-              activityType: 'visit'
+              activityType: 'visit',
+              isOpen: true
             }
           },
           ctx,
@@ -35,7 +34,11 @@ describe('getActivitiesForCleanup Function', () => {
     context('gets an unsuccessful response', () => {
       it('returns a Bad Request error if all required query parameters are not provided', async () => {
         try {
-          await getActivitiesForCleanup({}, ctx, () => {
+          await getActivitiesForCleanup({
+            queryStringParameters: {
+              isOpen: true
+            }
+          }, ctx, () => {
             return;
           });
         } catch (e) {
