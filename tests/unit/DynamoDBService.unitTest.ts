@@ -2,6 +2,7 @@ import AWS from 'aws-sdk';
 import { DocumentClient } from 'aws-sdk/lib/dynamodb/document_client';
 import { DynamoDBService } from '../../src/services/DynamoDBService';
 import { IActivityParams } from '../../src/models/Activity';
+import { subYears } from 'date-fns';
 
 describe('DynamoDBService', () => {
   context('Query activities', () => {
@@ -80,6 +81,28 @@ describe('DynamoDBService', () => {
         const params: IActivityParams = {
           fromStartTime: '2021-01-01',
           toStartTime: '2021-01-01',
+          activityType: 'visit'
+        };
+        await dynamoDbService.getActivities(params);
+
+        expect(stub).toStrictEqual(expectedCall);
+      });
+
+      it('for get openVisit activities', async () => {
+        const expectedCall = {
+          TableName: 'cvs-local-activities',
+          IndexName: 'ActivityTypeIndex',
+          KeyConditionExpression:
+            'activityType = :activityType AND startTime >= :fromStartTime',
+          ExpressionAttributeValues: {
+            ':activityType': 'visit',
+            ':fromStartTime': new Date(2020, 0, 1).toISOString()
+          },
+          ConditionExpression: 'attribute_not_exists(endTime)'
+        };
+        const dynamoDbService = new DynamoDBService();
+        const params: any = {
+          isOpen: true,
           activityType: 'visit'
         };
         await dynamoDbService.getActivities(params);

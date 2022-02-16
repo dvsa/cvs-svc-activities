@@ -1,14 +1,14 @@
 // tslint:disable-next-line: no-var-requires
-import {subHours, subYears} from "date-fns";
-
-const AWSXRay = require('aws-xray-sdk');
-// tslint:disable-next-line: no-var-requires
-const AWS = AWSXRay.captureAWS(require('aws-sdk'));
+import { subYears } from 'date-fns';
 import { AWSError } from 'aws-sdk'; // Only used as a type, so not wrapped by XRay
 import { DocumentClient } from 'aws-sdk/lib/dynamodb/document_client'; // Only used as a type, so not wrapped by XRay
 import { PromiseResult } from 'aws-sdk/lib/request'; // Only used as a type, so not wrapped by XRay
 import { Configuration } from '../utils/Configuration';
 import { IActivity, IActivityParams } from '../models/Activity';
+
+const AWSXRay = require('aws-xray-sdk');
+// tslint:disable-next-line: no-var-requires
+const AWS = AWSXRay.captureAWS(require('aws-sdk'));
 
 export class DynamoDBService {
   private static client: DocumentClient;
@@ -55,19 +55,21 @@ export class DynamoDBService {
    */
   public async getActivities(filterParams: IActivityParams): Promise<IActivity[]> {
     const { activityType, fromStartTime, toStartTime } = filterParams;
-
     let keyExpressionAttribute;
+    let params;
 
-    if (filterParams.onlyOpenActivities) {
-      keyExpressionAttribute = {
-        [':activityType']: activityType,
-        [':fromStartTime']: subYears(Date.now(),10).toISOString() };
+    // create keyExpressionAttribute object
+    keyExpressionAttribute = {
+      [':activityType']: activityType,
+    }
+
+    // isOpen is used to determine which additional expressions are needed
+    // fromStartTime is mandatory but not provided by auto-close so always set to 01-01-2020
+    if (filterParams.isOpen) {
+      Object.assign(keyExpressionAttribute, { [':fromStartTime']: new Date(2020, 0, 1).toISOString() })
     } else {
-      keyExpressionAttribute = {
-        [':activityType']: activityType,
-        [':fromStartTime']: fromStartTime,
-        [':toStartTime']: toStartTime
-      };
+      Object.assign(keyExpressionAttribute, { [':fromStartTime']: fromStartTime });
+      Object.assign(keyExpressionAttribute, { [':toStartTime']: toStartTime });
     }
 
     const expressionAttributeValues = Object.assign(
@@ -76,28 +78,22 @@ export class DynamoDBService {
       ...this.mapOptionalFilterValues(filterParams)
     );
 
-    let params;
+    // create params
+    params = {
+      TableName: this.tableName,
+      IndexName: 'ActivityTypeIndex',
+      KeyConditionExpression: 'activityType = :activityType AND startTime >= :fromStartTime',
+      ExpressionAttributeValues: {
+        ...expressionAttributeValues
+      },
+    };
 
-    if (filterParams.onlyOpenActivities) {
-      params = {
-        TableName: this.tableName,
-        IndexName: 'ActivityTypeIndex',
-        KeyConditionExpression: 'activityType = :activityType AND startTime >= :fromStartTime',
-        ExpressionAttributeValues: {
-          ...expressionAttributeValues
-        },
-        ConditionExpression: 'attribute_not_exists(endTime)'
-      };
+    // isOpen is used to determine which additional conditions are needed
+    // auto-close only retrieves activities with no endTime
+    if (filterParams.isOpen) {
+      Object.assign(params, { ConditionExpression: 'attribute_not_exists(endTime)' })
     } else {
-      params = {
-        TableName: this.tableName,
-        IndexName: 'ActivityTypeIndex',
-        KeyConditionExpression:
-          'activityType = :activityType AND startTime BETWEEN :fromStartTime AND :toStartTime',
-        ExpressionAttributeValues: {
-          ...expressionAttributeValues
-        }
-      };
+      Object.assign(params, { KeyConditionExpression: 'activityType = :activityType AND startTime BETWEEN :fromStartTime AND :toStartTime' });
 
       const filterExpression = this.getOptionalFilters('', filterParams);
 
@@ -108,8 +104,7 @@ export class DynamoDBService {
 
     console.log('params for getActivity', params);
     try {
-      const result = await this.queryAllData(params);
-      return result;
+      return await this.queryAllData(params);
     } catch (err) {
       console.error('error on getActivities', err);
       throw err;
