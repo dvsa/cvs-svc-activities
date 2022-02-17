@@ -1,14 +1,12 @@
 // tslint:disable-next-line: no-var-requires
-import { subYears } from 'date-fns';
+const AWSXRay = require('aws-xray-sdk');
+// tslint:disable-next-line: no-var-requires
+const AWS = AWSXRay.captureAWS(require('aws-sdk'));
 import { AWSError } from 'aws-sdk'; // Only used as a type, so not wrapped by XRay
 import { DocumentClient } from 'aws-sdk/lib/dynamodb/document_client'; // Only used as a type, so not wrapped by XRay
 import { PromiseResult } from 'aws-sdk/lib/request'; // Only used as a type, so not wrapped by XRay
 import { Configuration } from '../utils/Configuration';
 import { IActivity, IActivityParams } from '../models/Activity';
-
-const AWSXRay = require('aws-xray-sdk');
-// tslint:disable-next-line: no-var-requires
-const AWS = AWSXRay.captureAWS(require('aws-sdk'));
 
 export class DynamoDBService {
   private static client: DocumentClient;
