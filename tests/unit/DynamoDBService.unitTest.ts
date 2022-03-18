@@ -95,10 +95,11 @@ describe('DynamoDBService', () => {
           KeyConditionExpression:
             'activityType = :activityType AND startTime >= :fromStartTime',
           ExpressionAttributeValues: {
+            ":NULL": "NULL",
             ':activityType': 'visit',
             ':fromStartTime': new Date(2020, 0, 1).toISOString()
           },
-          ConditionExpression: 'attribute_not_exists(endTime)'
+          FilterExpression: "attribute_type(endTime, :NULL)"
         };
         const dynamoDbService = new DynamoDBService();
         const params: any = {
