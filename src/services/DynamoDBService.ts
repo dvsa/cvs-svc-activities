@@ -65,6 +65,7 @@ export class DynamoDBService {
     // fromStartTime is mandatory but not provided by auto-close so always set to 01-01-2020
     if (filterParams.isOpen) {
       Object.assign(keyExpressionAttribute, { [':fromStartTime']: new Date(2020, 0, 1).toISOString() })
+      Object.assign(keyExpressionAttribute, { [':NULL']: 'NULL' } )
     } else {
       Object.assign(keyExpressionAttribute, { [':fromStartTime']: fromStartTime });
       Object.assign(keyExpressionAttribute, { [':toStartTime']: toStartTime });
@@ -89,7 +90,7 @@ export class DynamoDBService {
     // isOpen is used to determine which additional conditions are needed
     // auto-close only retrieves activities with no endTime
     if (filterParams.isOpen) {
-      Object.assign(params, { ConditionExpression: 'attribute_not_exists(endTime)' })
+      Object.assign(params, { FilterExpression: 'attribute_type(endTime, :NULL)' })
     } else {
       Object.assign(params, { KeyConditionExpression: 'activityType = :activityType AND startTime BETWEEN :fromStartTime AND :toStartTime' });
 
