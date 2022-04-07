@@ -24,7 +24,7 @@ describe('endActivity Function', () => {
         ActivityService.prototype.endActivity = jest
           .fn()
           .mockResolvedValue({ wasVisitAlreadyClosed: false });
-        const resp: HTTPResponse = await endActivity({ pathParameters: { id: 1 }, body: { "endTime": endTime } }, ctx, () => {
+        const resp: HTTPResponse = await endActivity({ pathParameters: { id: '1' }, body: { "endTime": endTime } }, ctx, () => {
           return;
         });
         expect(resp).toBeInstanceOf(HTTPResponse);
@@ -47,7 +47,7 @@ describe('endActivity Function', () => {
       it('returns the thrown error', async () => {
         ActivityService.prototype.endActivity = jest.fn().mockRejectedValue(new Error('Oh No!'));
         try {
-          await endActivity({ pathParameters: { id: 1 }, body: { "endTime": endTime } }, ctx, () => {
+          await endActivity({ pathParameters: { id: '1' }, body: { "endTime": endTime } }, ctx, () => {
             return;
           });
         } catch (e) {
