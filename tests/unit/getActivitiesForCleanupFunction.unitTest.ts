@@ -47,6 +47,28 @@ describe('getActivitiesForCleanup Function', () => {
         }
       });
 
+      it('returns a Bad Request error if no query parameters are provided', async () => {
+        try {
+          await getActivitiesForCleanup({}, ctx, () => {
+            return;
+          });
+        } catch (e) {
+          expect(e.statusCode).toEqual(400);
+          expect(e.message).toEqual(HTTPRESPONSE.BAD_REQUEST);
+        }
+      });
+
+      it('returns a Bad Request error if no event is provided', async () => {
+        try {
+          await getActivitiesForCleanup(null, ctx, () => {
+            return;
+          });
+        } catch (e) {
+          expect(e.statusCode).toEqual(400);
+          expect(e.message).toEqual(HTTPRESPONSE.BAD_REQUEST);
+        }
+      });
+
       it('returns the thrown error', async () => {
         GetActivityService.prototype.getActivities = jest
           .fn()
