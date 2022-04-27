@@ -1,4 +1,4 @@
-import { ActivityFilters } from './../utils/Filters';
+import { ActivityFilters } from '../utils/Filters';
 import { HTTPResponse } from '../utils/HTTPResponse';
 import { DynamoDBService } from './DynamoDBService';
 import { HTTPRESPONSE } from '../assets/enums';
