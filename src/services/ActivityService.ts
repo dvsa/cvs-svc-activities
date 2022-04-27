@@ -90,8 +90,8 @@ export class ActivityService {
   }
 
   /**
-   * Ends an activity with the given id, and given endTime if provided
-   * if the visit was already closed, the response will be 200 and the flag wasVisitAlreadyClosed will be set to true
+   * Ends an activity with the given id, and given endTime if provided.
+   * If the visit was already closed, the response will be 200 and the flag wasVisitAlreadyClosed will be set to true
    * @param id - id of the activity to end
    * @param endTime - endTime provided by auto-close function
    * @returns Promise<{wasVisitAlreadyClosed: boolean}>

@@ -2,7 +2,6 @@ import AWS from 'aws-sdk';
 import { DocumentClient } from 'aws-sdk/lib/dynamodb/document_client';
 import { DynamoDBService } from '../../src/services/DynamoDBService';
 import { IActivityParams } from '../../src/models/Activity';
-import { subYears } from 'date-fns';
 
 describe('DynamoDBService', () => {
   context('Query activities', () => {
