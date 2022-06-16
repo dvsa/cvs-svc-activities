@@ -8,7 +8,6 @@ import {HTTPError} from "../models/HTTPError";
 
 const openVisitCheck: Handler = async (event: any): Promise<any> => {
     const check: Validator = new Validator();
-    const staffID = event.queryStringParameters?.testerStaffId;
 
     if (event.queryStringParameters) {
         if (!check.parametersAreValid(event.queryStringParameters)) {
@@ -17,7 +16,7 @@ const openVisitCheck: Handler = async (event: any): Promise<any> => {
     } else {
         return new HTTPError(400, HTTPRESPONSE.MISSING_PARAMETERS)
     }
-
+    const staffID = event.queryStringParameters?.testerStaffId;
     const openVisitService = new OpenVisitService(new DynamoDBService());
     return openVisitService
         .checkOpenVisit(staffID)

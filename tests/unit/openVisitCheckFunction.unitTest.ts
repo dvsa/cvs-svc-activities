@@ -6,22 +6,6 @@ import { HTTPRESPONSE } from '../../src/assets/enums';
 describe('openVisitCheck Function', () => {
   // @ts-ignore
   const ctx: Context = null;
-  describe('without staffId query param', () => {
-    it('return BAD REQUEST error', async () => {
-      const event = {
-        queryStringParameters: {}
-      };
-      try {
-         openVisitCheck(event, ctx, () => {
-          return;
-        });
-      } catch (e) {
-        expect.assertions(2);
-        expect(e.statusCode).toEqual(400);
-        expect(e.body).toEqual(JSON.stringify(HTTPRESPONSE.BAD_REQUEST));
-      }
-    });
-  });
   describe('with staffId query param that is empty string', () => {
     it('return BAD REQUEST error', async () => {
       const event = {
@@ -39,6 +23,7 @@ describe('openVisitCheck Function', () => {
         expect(e.statusCode).toEqual(400);
         expect(e.body).toEqual(HTTPRESPONSE.MISSING_PARAMETERS);
       }
+      return;
     });
   });
   describe('with staffId query param that is the string "undefined"', () => {
@@ -58,6 +43,7 @@ describe('openVisitCheck Function', () => {
         expect(e.statusCode).toEqual(400);
         expect(e.body).toEqual(HTTPRESPONSE.MISSING_PARAMETERS);
       }
+      return;
     });
   });
   describe('with staffId query param that is the string "null"', () => {
@@ -77,6 +63,7 @@ describe('openVisitCheck Function', () => {
         expect(e.statusCode).toEqual(400);
         expect(e.body).toEqual(HTTPRESPONSE.MISSING_PARAMETERS);
       }
+      return;
     });
   });
   describe('with staffId query param that is undefined', () => {
@@ -96,6 +83,7 @@ describe('openVisitCheck Function', () => {
         expect(e.statusCode).toEqual(400);
         expect(e.body).toEqual(HTTPRESPONSE.MISSING_PARAMETERS);
       }
+      return;
     });
   });
   describe('with staffId query param that is null', () => {
@@ -115,6 +103,7 @@ describe('openVisitCheck Function', () => {
         expect(e.statusCode).toEqual(400);
         expect(e.body).toEqual(HTTPRESPONSE.MISSING_PARAMETERS);
       }
+      return;
     });
   });
   describe('with staffId query param', () => {
@@ -135,6 +124,7 @@ describe('openVisitCheck Function', () => {
           expect(e.statusCode).toEqual(200);
           expect(e.body).toEqual(JSON.stringify(true));
         }
+        return;
       });
     });
     describe('and with a error returned from the Service call', () => {
@@ -153,6 +143,7 @@ describe('openVisitCheck Function', () => {
           expect(e.statusCode).toEqual(418);
           expect(e.body).toEqual(JSON.stringify('Warning, Will Robinson!'));
         }
+        return;
       });
     });
   });
