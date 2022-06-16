@@ -13,13 +13,16 @@ describe('openVisitCheck Function', () => {
         queryStringParameters: {}
       };
       // const svcSpy = jest.spyOn(OpenVisitService.prototype, "checkOpenVisit").mockResolvedValue(true)
-      expect.assertions(2);
 
-      const output: HTTPResponse = await openVisitCheck(event, ctx, () => {
-        return;
-      });
-      expect(output.statusCode).toEqual(400);
-      expect(output.body).toEqual(JSON.stringify(HTTPRESPONSE.BAD_REQUEST));
+      try {
+        await openVisitCheck(event, ctx, () => {
+          return;
+        });
+      } catch (e) {
+        expect.assertions(2);
+        expect(e.statusCode).toEqual(400);
+        expect(e.body).toEqual(JSON.stringify(HTTPRESPONSE.BAD_REQUEST));
+      }
     });
   });
   describe('with staffId query param that is empty string', () => {
@@ -29,13 +32,16 @@ describe('openVisitCheck Function', () => {
           testerStaffId: ' '
         }
       };
-      expect.assertions(2);
 
-      const output: HTTPResponse = await openVisitCheck(event, ctx, () => {
-        return;
-      });
-      expect(output.statusCode).toEqual(400);
-      expect(output.body).toEqual(JSON.stringify(HTTPRESPONSE.BAD_REQUEST));
+      try {
+        await openVisitCheck(event, ctx, () => {
+          return;
+        });
+      } catch (e) {
+        expect.assertions(2);
+        expect(e.statusCode).toEqual(400);
+        expect(e.body).toEqual(HTTPRESPONSE.MISSING_PARAMETERS);
+      }
     });
   });
   describe('with staffId query param that is the string "undefined"', () => {
@@ -45,13 +51,16 @@ describe('openVisitCheck Function', () => {
           testerStaffId: 'undefined'
         }
       };
-      expect.assertions(2);
 
-      const output: HTTPResponse = await openVisitCheck(event, ctx, () => {
-        return;
-      });
-      expect(output.statusCode).toEqual(400);
-      expect(output.body).toEqual(JSON.stringify(HTTPRESPONSE.BAD_REQUEST));
+      try {
+        await openVisitCheck(event, ctx, () => {
+          return;
+        });
+      } catch (e) {
+        expect.assertions(2);
+        expect(e.statusCode).toEqual(400);
+        expect(e.body).toEqual(HTTPRESPONSE.MISSING_PARAMETERS);
+      }
     });
   });
   describe('with staffId query param that is the string "null"', () => {
@@ -61,13 +70,16 @@ describe('openVisitCheck Function', () => {
           testerStaffId: 'null'
         }
       };
-      expect.assertions(2);
 
-      const output: HTTPResponse = await openVisitCheck(event, ctx, () => {
-        return;
-      });
-      expect(output.statusCode).toEqual(400);
-      expect(output.body).toEqual(JSON.stringify(HTTPRESPONSE.BAD_REQUEST));
+      try{
+        await openVisitCheck(event, ctx, () => {
+          return;
+        });
+      } catch (e) {
+        expect.assertions(2);
+        expect(e.statusCode).toEqual(400);
+        expect(e.body).toEqual(HTTPRESPONSE.MISSING_PARAMETERS);
+      }
     });
   });
   describe('with staffId query param that is undefined', () => {
@@ -77,13 +89,16 @@ describe('openVisitCheck Function', () => {
           testerStaffId: undefined
         }
       };
-      expect.assertions(2);
 
-      const output: HTTPResponse = await openVisitCheck(event, ctx, () => {
-        return;
-      });
-      expect(output.statusCode).toEqual(400);
-      expect(output.body).toEqual(JSON.stringify(HTTPRESPONSE.BAD_REQUEST));
+      try{
+        await openVisitCheck(event, ctx, () => {
+          return;
+        });
+      } catch (e) {
+        expect.assertions(2);
+        expect(e.statusCode).toEqual(400);
+        expect(e.body).toEqual(HTTPRESPONSE.MISSING_PARAMETERS);
+      }
     });
   });
   describe('with staffId query param that is null', () => {
@@ -93,13 +108,16 @@ describe('openVisitCheck Function', () => {
           testerStaffId: null
         }
       };
-      expect.assertions(2);
 
-      const output: HTTPResponse = await openVisitCheck(event, ctx, () => {
-        return;
-      });
-      expect(output.statusCode).toEqual(400);
-      expect(output.body).toEqual(JSON.stringify(HTTPRESPONSE.BAD_REQUEST));
+      try{
+        await openVisitCheck(event, ctx, () => {
+          return;
+        });
+      } catch (e) {
+        expect.assertions(2);
+        expect(e.statusCode).toEqual(400);
+        expect(e.body).toEqual(HTTPRESPONSE.MISSING_PARAMETERS);
+      }
     });
   });
   describe('with staffId query param', () => {
@@ -113,13 +131,16 @@ describe('openVisitCheck Function', () => {
         const svcSpy = jest
           .spyOn(OpenVisitService.prototype, 'checkOpenVisit')
           .mockResolvedValue(true);
-        expect.assertions(2);
 
-        const output: HTTPResponse = await openVisitCheck(event, ctx, () => {
-          return;
-        });
-        expect(output.statusCode).toEqual(200);
-        expect(output.body).toEqual(JSON.stringify(true));
+        try {
+          await openVisitCheck(event, ctx, () => {
+            return;
+          });
+        } catch (e) {
+          expect.assertions(2);
+          expect(e.statusCode).toEqual(200);
+          expect(e.body).toEqual(JSON.stringify(true));
+        }
       });
     });
     describe('and with a error returned from the Service call', () => {
@@ -132,13 +153,17 @@ describe('openVisitCheck Function', () => {
         const svcSpy = jest
           .spyOn(OpenVisitService.prototype, 'checkOpenVisit')
           .mockRejectedValue(new HTTPResponse(418, 'Warning, Will Robinson!'));
-        expect.assertions(2);
 
-        const output: HTTPResponse = await openVisitCheck(event, ctx, () => {
-          return;
-        });
-        expect(output.statusCode).toEqual(418);
-        expect(output.body).toEqual(JSON.stringify('Warning, Will Robinson!'));
+
+        try {
+          await openVisitCheck(event, ctx, () => {
+            return;
+          });
+        } catch (e) {
+          expect.assertions(2);
+          expect(e.statusCode).toEqual(418);
+          expect(e.body).toEqual(JSON.stringify('Warning, Will Robinson!'));
+        }
       });
     });
   });

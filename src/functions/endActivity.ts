@@ -4,6 +4,7 @@ import { HTTPResponse } from '../utils/HTTPResponse';
 import { DynamoDBService } from '../services/DynamoDBService';
 import { HTTPRESPONSE } from '../assets/enums';
 import { Validator } from '../utils/Validator';
+import {HTTPError} from "../models/HTTPError";
 
 const endActivity: Handler = async (
   event: any,
@@ -15,8 +16,12 @@ const endActivity: Handler = async (
   // auto-close will provide the endTime in the event body but VTA requests will not
   const endTime: string = event.body ? event.body.endTime : null;
 
-  if (!check.parameterIsValid(id)) {
-    return new HTTPResponse(400, HTTPRESPONSE.BAD_REQUEST);
+  if (event.pathParameters) {
+    if (!check.parametersAreValid(event.pathParameters)) {
+      return Promise.reject(new HTTPError(400, HTTPRESPONSE.MISSING_PARAMETERS));
+    }
+  } else {
+    return Promise.reject(new HTTPError(400, HTTPRESPONSE.MISSING_PARAMETERS));
   }
 
   return activityService
