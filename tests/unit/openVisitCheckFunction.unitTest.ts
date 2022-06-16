@@ -2,7 +2,6 @@ import { openVisitCheck } from '../../src/functions/openVisitCheck';
 import { Context } from 'aws-lambda';
 import OpenVisitService from '../../src/services/OpenVisitService';
 import { HTTPRESPONSE } from '../../src/assets/enums';
-import { HTTPResponse } from '../../src/utils/HTTPResponse';
 
 describe('openVisitCheck Function', () => {
   // @ts-ignore
@@ -12,10 +11,8 @@ describe('openVisitCheck Function', () => {
       const event = {
         queryStringParameters: {}
       };
-      // const svcSpy = jest.spyOn(OpenVisitService.prototype, "checkOpenVisit").mockResolvedValue(true)
-
       try {
-        await openVisitCheck(event, ctx, () => {
+         openVisitCheck(event, ctx, () => {
           return;
         });
       } catch (e) {
@@ -128,10 +125,7 @@ describe('openVisitCheck Function', () => {
             testerStaffId: 'anything'
           }
         };
-        const svcSpy = jest
-          .spyOn(OpenVisitService.prototype, 'checkOpenVisit')
-          .mockResolvedValue(true);
-
+        jest.spyOn(OpenVisitService.prototype, 'checkOpenVisit').mockResolvedValue(true);
         try {
           await openVisitCheck(event, ctx, () => {
             return;
@@ -150,11 +144,6 @@ describe('openVisitCheck Function', () => {
             testerStaffId: 'anything'
           }
         };
-        const svcSpy = jest
-          .spyOn(OpenVisitService.prototype, 'checkOpenVisit')
-          .mockRejectedValue(new HTTPResponse(418, 'Warning, Will Robinson!'));
-
-
         try {
           await openVisitCheck(event, ctx, () => {
             return;
