@@ -59,79 +59,74 @@ describe('endActivity Function', () => {
         ActivityService.prototype.endActivity = jest
           .fn()
           .mockResolvedValue({ wasVisitAlreadyClosed: false });
-        try{
-          await endActivity({ pathParameters: { id: ' ' } }, ctx, () => {
-            return;
-          });
-        } catch (e){
-          expect(e).toBeInstanceOf(HTTPError);
-          expect(e.statusCode).toEqual(400);
-          expect(e.body).toEqual(HTTPRESPONSE.MISSING_PARAMETERS);
-        }
-
+        const resp: HTTPError = await endActivity({ pathParameters: { id: ' ' } }, ctx, () => {
+          return;
+        });
+        expect(resp).toBeInstanceOf(HTTPError);
+        expect(resp.statusCode).toEqual(400);
+        expect(resp.body).toEqual(HTTPRESPONSE.MISSING_PARAMETERS);
       });
       it('returns BAD REQUEST error when path parameter is the string "undefined"', async () => {
         ActivityService.prototype.endActivity = jest
           .fn()
           .mockResolvedValue({ wasVisitAlreadyClosed: false });
-        try {
-          await endActivity({pathParameters: {id: 'undefined'}}, ctx, () => {
-                return;
-              }
-          );
-        } catch (e) {
-          expect(e).toBeInstanceOf(HTTPError);
-          expect(e.statusCode).toEqual(400);
-          expect(e.body).toEqual(HTTPRESPONSE.MISSING_PARAMETERS);
-        }
+        const resp: HTTPError = await endActivity(
+          { pathParameters: { id: 'undefined' } },
+          ctx,
+          () => {
+            return;
+          }
+        );
+        expect(resp).toBeInstanceOf(HTTPError);
+        expect(resp.statusCode).toEqual(400);
+        expect(resp.body).toEqual(HTTPRESPONSE.MISSING_PARAMETERS);
       });
       it('returns BAD REQUEST error when path parameter is the string "null"', async () => {
         ActivityService.prototype.endActivity = jest
-            .fn()
-            .mockResolvedValue({wasVisitAlreadyClosed: false});
-        try {
-          await endActivity({pathParameters: {id: 'null'}}, ctx, () => {
-                return;
-              }
-          );
-        } catch (e) {
-          expect(e).toBeInstanceOf(HTTPError);
-          expect(e.statusCode).toEqual(400);
-          expect(e.body).toEqual(HTTPRESPONSE.MISSING_PARAMETERS);
-        }
+          .fn()
+          .mockResolvedValue({ wasVisitAlreadyClosed: false });
+        const resp: HTTPError = await endActivity(
+          { pathParameters: { id: 'null' } },
+          ctx,
+          () => {
+            return;
+          }
+        );
+        expect(resp).toBeInstanceOf(HTTPError);
+        expect(resp.statusCode).toEqual(400);
+        expect(resp.body).toEqual(HTTPRESPONSE.MISSING_PARAMETERS);
       });
 
       it('returns BAD REQUEST error when path parameter is undefined', async () => {
         ActivityService.prototype.endActivity = jest
-            .fn()
-            .mockResolvedValue({wasVisitAlreadyClosed: false});
-        try{
-          await endActivity({pathParameters: {id: undefined}}, ctx, () => {
-                return;
-              }
-          );
-        } catch (e) {
-          expect(e).toBeInstanceOf(HTTPError);
-          expect(e.statusCode).toEqual(400);
-          expect(e.body).toEqual(HTTPRESPONSE.MISSING_PARAMETERS);
-        }
+          .fn()
+          .mockResolvedValue({ wasVisitAlreadyClosed: false });
+        const resp: HTTPError = await endActivity(
+          { pathParameters: { id: undefined } },
+          ctx,
+          () => {
+            return;
+          }
+        );
+        expect(resp).toBeInstanceOf(HTTPError);
+        expect(resp.statusCode).toEqual(400);
+        expect(resp.body).toEqual(HTTPRESPONSE.MISSING_PARAMETERS);
       });
 
       it('returns BAD REQUEST error when path parameter is null', async () => {
         ActivityService.prototype.endActivity = jest
-            .fn()
-            .mockResolvedValue({wasVisitAlreadyClosed: false});
-
-        try {
-          await endActivity({pathParameters: {id: undefined}}, ctx, () => {
-                return;
-              }
-          );
-        } catch (e) {
-          expect(e).toBeInstanceOf(HTTPError);
-          expect(e.statusCode).toEqual(400);
-          expect(e.body).toEqual(HTTPRESPONSE.MISSING_PARAMETERS);
-        }
+          .fn()
+          .mockResolvedValue({ wasVisitAlreadyClosed: false });
+        const resp: HTTPError = await endActivity(
+          { pathParameters: { id: undefined } },
+          ctx,
+          () => {
+            return;
+          }
+        );
+        expect(resp).toBeInstanceOf(HTTPError);
+        expect(resp.statusCode).toEqual(400);
+        expect(resp.body).toEqual(HTTPRESPONSE.MISSING_PARAMETERS);
       });
     });
   });
