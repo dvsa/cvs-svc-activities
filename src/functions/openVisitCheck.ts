@@ -11,10 +11,10 @@ const openVisitCheck: Handler = async (event: any): Promise<any> => {
 
     if (event.queryStringParameters) {
         if (!check.parametersAreValid(event.queryStringParameters)) {
-            return new HTTPError(400, HTTPRESPONSE.MISSING_PARAMETERS)
+            return Promise.resolve(new HTTPResponse(400, HTTPRESPONSE.MISSING_PARAMETERS));
         }
     } else {
-        return new HTTPError(400, HTTPRESPONSE.MISSING_PARAMETERS)
+        return Promise.resolve(new HTTPResponse(400, HTTPRESPONSE.MISSING_PARAMETERS));
     }
     const staffID = event.queryStringParameters?.testerStaffId;
     const openVisitService = new OpenVisitService(new DynamoDBService());
