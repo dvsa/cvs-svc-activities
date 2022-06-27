@@ -4,7 +4,6 @@ import {DynamoDBService} from '../services/DynamoDBService';
 import OpenVisitService from '../services/OpenVisitService';
 import {HTTPRESPONSE} from '../assets/enums';
 import {Validator} from '../utils/Validator';
-import {HTTPError} from "../models/HTTPError";
 
 const openVisitCheck: Handler = async (event: any): Promise<any> => {
     const check: Validator = new Validator();
@@ -16,7 +15,7 @@ const openVisitCheck: Handler = async (event: any): Promise<any> => {
     } else {
         return Promise.resolve(new HTTPResponse(400, HTTPRESPONSE.MISSING_PARAMETERS));
     }
-    const staffID = event.queryStringParameters?.testerStaffId;
+    const staffID = event.queryStringParameters.testerStaffId;
     const openVisitService = new OpenVisitService(new DynamoDBService());
     return openVisitService
         .checkOpenVisit(staffID)
@@ -28,4 +27,4 @@ const openVisitCheck: Handler = async (event: any): Promise<any> => {
         });
 };
 
-export {openVisitCheck};
+export { openVisitCheck };
