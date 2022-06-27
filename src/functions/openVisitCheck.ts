@@ -1,9 +1,9 @@
-import {Handler} from 'aws-lambda';
-import {HTTPResponse} from '../utils/HTTPResponse';
-import {DynamoDBService} from '../services/DynamoDBService';
+import { Handler } from 'aws-lambda';
+import { HTTPResponse } from '../utils/HTTPResponse';
+import { DynamoDBService } from '../services/DynamoDBService';
 import OpenVisitService from '../services/OpenVisitService';
-import {HTTPRESPONSE} from '../assets/enums';
-import {Validator} from '../utils/Validator';
+import { HTTPRESPONSE } from '../assets/enums';
+import { Validator } from '../utils/Validator';
 
 const openVisitCheck: Handler = async (event: any): Promise<any> => {
     const check: Validator = new Validator();
