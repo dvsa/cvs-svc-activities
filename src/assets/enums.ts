@@ -12,8 +12,7 @@ export enum HTTPRESPONSE {
   PARENT_ID_REQUIRED = 'ParentId is required.',
   START_TIME_EMPTY = 'Start Time not provided.',
   END_TIME_EMPTY = 'End Time not provided.',
-  ACTIVITY_UPDATED = 'Activity updated',
-  MISSING_PARAMETERS = "Missing parameter value."
+  ACTIVITY_UPDATED = 'Activity updated'
 }
 
 export enum ERRORS {

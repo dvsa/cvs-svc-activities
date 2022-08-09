@@ -11,17 +11,14 @@ const endActivity: Handler = async (
 ): Promise<APIGatewayProxyResult> => {
   const activityService = new ActivityService(new DynamoDBService());
   const check: Validator = new Validator();
+  const id: string = event.pathParameters.id;
   // auto-close will provide the endTime in the event body but VTA requests will not
   const endTime: string = event.body ? event.body.endTime : null;
 
-  if (event.pathParameters) {
-    if (!check.parametersAreValid(event.pathParameters)) {
-      return Promise.resolve(new HTTPResponse(400, HTTPRESPONSE.MISSING_PARAMETERS));
-    }
-  } else {
-    return Promise.resolve(new HTTPResponse(400, HTTPRESPONSE.MISSING_PARAMETERS));
+  if (!check.parameterIsValid(id)) {
+    return new HTTPResponse(400, HTTPRESPONSE.BAD_REQUEST);
   }
-  const id: string = event.pathParameters.id;
+
   return activityService
     .endActivity(id, endTime)
     .then((wasVisitAlreadyClosed) => {
