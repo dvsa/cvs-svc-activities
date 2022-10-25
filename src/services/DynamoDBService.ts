@@ -113,7 +113,7 @@ export class DynamoDBService {
   /**
    * Retrieves the ongoing activity for a given staffId
    * @param staffId - staff id for which to retrieve activity
-   * @returns Promise<IActivity[]>
+   * @returns Promise<Activity[]>
    */
   public async getOngoingByStaffId(
     staffId: string
