@@ -15,7 +15,7 @@ describe('openVisitCheck Function', () => {
         return;
       });
       expect(output.statusCode).toEqual(400);
-      expect(output.body).toEqual(JSON.stringify(HTTPRESPONSE.BAD_REQUEST));
+      expect(output.body).toEqual(JSON.stringify(HTTPRESPONSE.MISSING_PARAMETERS));
     });
   });
   describe('without staffId query param', () => {
