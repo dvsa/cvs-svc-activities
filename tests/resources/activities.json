@@ -199,20 +199,6 @@
     "testStationType": "gvts"
   },
   {
-    "id": "qapack00-0000-0000-0000-000000000004",
-    "activityDay": "2022-12-01",
-    "activityType": "visit",
-    "endTime": null,
-    "startTime": "2022-12-01T14:00:00.000Z",
-    "testerEmail": "BE-Regression-Tester@dvsatest-cloud.uk",
-    "testerName": "BE Regression Tester",
-    "testerStaffId": "001100",
-    "testStationEmail": "automation@nonprod.cvs.dvsacloud.uk",
-    "testStationName": "Rowe, Wunsch and Wisoky",
-    "testStationPNumber": "87-1369569",
-    "testStationType": "gvts"
-  },
-  {
     "id": "qapack00-0000-0000-0000-000000000005",
     "activityDay": "2022-12-01",
     "activityType": "visit",
