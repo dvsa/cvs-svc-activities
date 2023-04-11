@@ -25,7 +25,7 @@
     "audit": "npm audit --prod",
     "package": "mkdir ${ZIP_NAME} && cp package.json package-lock.json ${ZIP_NAME}/ && cp -r .build/src/* ${ZIP_NAME}/ && cd ${ZIP_NAME} && npm ci --production && rm package.json package-lock.json && zip -qr ../${ZIP_NAME}.zip .",
     "tools-setup": "ts-node scripts/installDynamoDB.ts",
-    "postinstall": "sed -i '' 's|http://s3-us-west-2|https://s3-us-west-2|g' ./node_modules/dynamodb-localhost/dynamodb/config.json && sed -i '' 's|require(\"http\")|require(\"https\")|g' node_modules/dynamodb-localhost/dynamodb/installer.js"
+    "postinstall": "sed -i 's|http://s3-us-west-2|https://s3-us-west-2|g' ./node_modules/dynamodb-localhost/dynamodb/config.json && sed -i 's|require(\"http\")|require(\"https\")|g' node_modules/dynamodb-localhost/dynamodb/installer.js"
   },
   "author": "",
   "license": "ISC",
