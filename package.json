@@ -24,8 +24,10 @@
     "sonar-scanner": "sonar-scanner",
     "audit": "npm audit --prod",
     "package": "mkdir ${ZIP_NAME} && cp package.json package-lock.json ${ZIP_NAME}/ && cp -r .build/src/* ${ZIP_NAME}/ && cd ${ZIP_NAME} && npm ci --production && rm package.json package-lock.json && zip -qr ../${ZIP_NAME}.zip .",
-    "tools-setup": "ts-node scripts/installDynamoDB.ts",
-    "postinstall": "patch-package"
+    "tools-setup": "ts-node scripts/installDynamoDB.ts && husky install",
+    "postinstall": "patch-package",
+    "pre-commit": "npm run security-checks && npm run audit && npm run lint && npm run format",
+    "pre-push": "npm run prepush"
   },
   "author": "",
   "license": "ISC",
@@ -84,11 +86,5 @@
     "collectCoverage": true,
     "testResultsProcessor": "jest-sonar-reporter",
     "testURL": "http://localhost"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run security-checks && npm run audit && npm run lint && npm run format",
-      "pre-push": "npm run prepush"
-    }
   }
 }
