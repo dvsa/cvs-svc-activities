@@ -1,4 +1,4 @@
-import * as Joi from 'joi';
+import Joi from "joi";
 import moment from 'moment';
 import uuid from 'uuid';
 import { AWSError } from 'aws-sdk'; // Only used as a type, so not wrapped by XRay
@@ -30,7 +30,7 @@ export class ActivityService {
    */
   public async createActivity(activity: IActivity): Promise<{ id: string }> {
     // Payload validation
-    const validation: Joi.ValidationResult<IActivity> = Joi.validate(activity, ActivitySchema);
+    const validation: Joi.ValidationResult<IActivity> = await ActivitySchema.validateAsync(activity)
 
     if (validation.error) {
       const error: string = validation.error.details[0].message;
@@ -138,10 +138,7 @@ export class ActivityService {
     const activitiesList: any[] = [];
     for (const each of activities) {
       // Payload validation
-      const validation: Joi.ValidationResult<IActivity> = Joi.validate(
-        each,
-        ActivityUpdateSchema
-      );
+      const validation: Joi.ValidationResult<IActivity> = await ActivitySchema.validateAsync(each);
       if (validation.error) {
         const error: string = validation.error.details[0].message;
 
