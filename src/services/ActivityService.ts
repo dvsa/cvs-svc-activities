@@ -1,4 +1,4 @@
-import Joi from "joi";
+import * as Joi from 'joi';
 import moment from 'moment';
 import uuid from 'uuid';
 /* tslint:disable */

@@ -9,7 +9,7 @@ describe('Activity lambda - updateActivity path', () => {
   });
   afterAll(() => {
     jest.restoreAllMocks();
-    jest.resetModules();
+    jest.resetModuleRegistry();
   });
   context('when the updateActivity function is invoked', () => {
     const payload: any = {
