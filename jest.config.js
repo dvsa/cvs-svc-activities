@@ -1,10 +1,24 @@
 module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'node',
-  roots: ['<rootDir>/src', '<rootDir>/tests'],
-  setupFiles: ['jest-plugin-context/setup'],
-  moduleFileExtensions: ['js', 'ts'],
-  testResultsProcessor: 'jest-sonar-reporter',
-  testMatch: ['**/*.*Test.ts'],
-  collectCoverageFrom: ['<rootDir>/src/**/{!(ignore-me),}.ts']
+  preset: "ts-jest",
+  testEnvironment: "node",
+  roots: ["<rootDir>/src", "<rootDir>/tests"],
+  testMatch: ["**/*.unitTest.ts"],
+  setupFiles: ["jest-plugin-context/setup"],
+  moduleFileExtensions: ["js", "ts"],
+  coverageDirectory: "coverage",
+  collectCoverage: false,
+  collectCoverageFrom: ["src/**/*.{js,ts}", "!**/node_modules/**"],
+  coverageThreshold: {
+    global: {
+      branches: 80,
+      functions: 80,
+      lines: 80,
+      statements: 80,
+    },
+  },
+  testResultsProcessor: "jest-sonar-reporter",
+  testURL: "http://localhost",
+  transform: {
+    "^.+\\.ts$": "ts-jest",
+  },
 };

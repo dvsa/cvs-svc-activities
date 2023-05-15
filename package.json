@@ -47,6 +47,7 @@
     "patch-package": "^6.5.1"
   },
   "devDependencies": {
+    "@types/prettier": "2.6.0",
     "@types/lodash": "4.14.121",
     "@types/superagent": "^4.1.15",
     "@types/babel__traverse": "7.0.4",
@@ -85,11 +86,5 @@
     "reportPath": ".reports",
     "reportFile": "test-report.xml",
     "indent": 4
-  },
-  "jest": {
-    "coverageDirectory": "./coverage",
-    "collectCoverage": true,
-    "testResultsProcessor": "jest-sonar-reporter",
-    "testURL": "http://localhost"
   }
 }
