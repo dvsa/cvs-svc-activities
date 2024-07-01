@@ -1,8 +1,8 @@
 import * as Joi from 'joi';
 import { activitiesTypes, stationTypes, waitReasons } from './Activity';
-import { ActivityType } from '../assets/enums';
+import { ActivityType } from '@dvsa/cvs-type-definitions/types/v1/activity';
 
-export const ActivitySchema = Joi.object().keys({
+export const ActivityJoiSchema = Joi.object().keys({
   parentId: Joi.string().optional(),
   activityType: Joi.any().only([activitiesTypes]).required(),
   testStationName: Joi.string().required(),

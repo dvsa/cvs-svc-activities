@@ -4,6 +4,7 @@ import { DynamoDBService } from './DynamoDBService';
 import { HTTPRESPONSE } from '../assets/enums';
 import { IActivityParams } from '../models/Activity';
 import { isValid } from 'date-fns';
+import { ActivitySchema } from '@dvsa/cvs-type-definitions/types/v1/activity';
 
 export class GetActivityService {
   public readonly dbClient: DynamoDBService;
@@ -21,7 +22,7 @@ export class GetActivityService {
    * @param params - Parameters provided in request
    * @returns Promise - Array of activities filtered based on the given params and sorted desc
    */
-  public async getActivities(params: IActivityParams): Promise<any> {
+  public async getActivities(params: IActivityParams): Promise<ActivitySchema[]> {
     try {
       const { fromStartTime, toStartTime, activityType, isOpen } = params;
 

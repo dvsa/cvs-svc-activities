@@ -2,6 +2,7 @@ import { ActivityService } from '../../src/services/ActivityService';
 import { DynamoDBMockService } from '../models/DynamoDBMockService';
 import { HTTPResponse } from '../../src/utils/HTTPResponse';
 import { HTTPRESPONSE } from '../../src/assets/enums';
+import { ActivitySchema, ActivityType, TestStationTypes } from '@dvsa/cvs-type-definitions/types/v1/activity';
 
 describe('endActivity', () => {
   let activityService: any;
@@ -29,15 +30,16 @@ describe('endActivity', () => {
   context('when the activity has successfully ended not providing date', () => {
     it(`should return wasVisitAlreadyClosed set to false when endActivity is called`, async () => {
       // Create the activity
-      const payload: any = {
-        activityType: 'visit',
+      const payload: ActivitySchema = {
+        activityType: ActivityType.VISIT,
         testStationName: 'Rowe, Wunsch and Wisoky',
         testStationPNumber: '87-1369569',
         testStationEmail: 'teststationname@dvsa.gov.uk',
-        testStationType: 'gvts',
+        testStationType: TestStationTypes.GVTS,
         testerName: 'Gica',
         testerStaffId: '132',
-        testerEmail: 'tester@dvsa.gov.uk'
+        testerEmail: 'tester@dvsa.gov.uk',
+        startTime: new Date().toISOString()
       };
 
       activityId = (await activityService.createActivity(payload)).id;
@@ -57,15 +59,17 @@ describe('endActivity', () => {
   context('when the activity has successfully ended by providing date', () => {
     it(`should return wasVisitAlreadyClosed set to false when endActivity is called`, async () => {
       // Create the activity
-      const payload: any = {
-        activityType: 'visit',
+      const payload: ActivitySchema = {
+        activityType: ActivityType.VISIT,
         testStationName: 'Rowe, Wunsch and Wisoky',
         testStationPNumber: '87-1369569',
         testStationEmail: 'teststationname@dvsa.gov.uk',
-        testStationType: 'gvts',
+        testStationType: TestStationTypes.GVTS,
         testerName: 'Gica',
         testerStaffId: '132',
-        testerEmail: 'tester@dvsa.gov.uk'
+        testerEmail: 'tester@dvsa.gov.uk',
+        startTime: new Date().toISOString(),
+        endTime: new Date(endTime+1000).toISOString()
       };
 
       activityId = (await activityService.createActivity(payload)).id;
