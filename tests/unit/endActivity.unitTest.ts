@@ -52,9 +52,6 @@ describe('endActivity', () => {
         .then((response: { wasVisitAlreadyClosed: boolean }) => {
           expect(response.wasVisitAlreadyClosed).toBe(false);
         })
-        .catch((_: HTTPResponse) => {
-          fail('test should not fail');
-        });
     });
   });
 
@@ -71,7 +68,6 @@ describe('endActivity', () => {
         testerStaffId: '132',
         testerEmail: 'tester@dvsa.gov.uk',
         startTime: new Date().toISOString(),
-        endTime: new Date().toISOString()
       };
 
       activityId = (await activityService.createActivity(payload)).id;
@@ -82,9 +78,6 @@ describe('endActivity', () => {
         .then((response: { wasVisitAlreadyClosed: boolean }) => {
           expect(response.wasVisitAlreadyClosed).toBe(false);
         })
-        .catch((_: HTTPResponse) => {
-          fail('test should not fail');
-        });
     });
   });
 
@@ -101,9 +94,6 @@ describe('endActivity', () => {
         .then((response: { wasVisitAlreadyClosed: boolean }) => {
           expect(response.wasVisitAlreadyClosed).toBe(true);
         })
-        .catch(() => {
-          fail('test should not fail');
-        });
     });
   });
 });
