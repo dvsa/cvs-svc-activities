@@ -3,7 +3,7 @@ import { HTTPResponse } from '../../src/utils/HTTPResponse';
 import { getActivitiesForCleanup } from '../../src/functions/getActivitiesForCleanup';
 import { HTTPRESPONSE } from '../../src/assets/enums';
 import { Context } from 'aws-lambda';
-import { ActivityType } from '@dvsa/cvs-type-definitions/types/v1/activity';
+import { ActivityType } from '@dvsa/cvs-type-definitions/types/v1/enums/activityType.enum';
 
 describe('getActivitiesForCleanup Function', () => {
   context('calls activity service', () => {

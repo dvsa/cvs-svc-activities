@@ -2,7 +2,7 @@ import { ActivityService } from '../../src/services/ActivityService';
 import { HTTPResponse } from '../../src/utils/HTTPResponse';
 import { HTTPRESPONSE } from '../../src/assets/enums';
 import { DynamoDBService } from '../../src/services/DynamoDBService';
-import { WaitReason } from '@dvsa/cvs-type-definitions/types/v1/activity';
+import { WaitReason } from '@dvsa/cvs-type-definitions/types/v1/enums/waitReason.enum';
 
 describe('Activity Service - update Activity path', () => {
   const activityId: string = '9e4b9304-446e-4678-8289-d34fca9259e4'; // Existing ID

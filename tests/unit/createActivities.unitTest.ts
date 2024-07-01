@@ -1,5 +1,7 @@
 import { ActivityService } from '../../src/services/ActivityService';
-import { ActivitySchema, ActivityType, TestStationTypes } from '@dvsa/cvs-type-definitions/types/v1/activity';
+import { ActivitySchema } from '@dvsa/cvs-type-definitions/types/v1/activity';
+import { ActivityType } from '@dvsa/cvs-type-definitions/types/v1/enums/activityType.enum';
+import { TestStationTypes } from '@dvsa/cvs-type-definitions/types/v1/enums/testStationType.enum';
 import { HTTPResponse } from '../../src/utils/HTTPResponse';
 import { HTTPRESPONSE } from '../../src/assets/enums';
 import { DynamoDBService } from '../../src/services/DynamoDBService';
@@ -184,7 +186,7 @@ describe('createActivity', () => {
         return activityService.createActivity(payload).catch((error: HTTPResponse) => {
           const body: any = JSON.parse(error.body);
           expect(body.error).toEqual(
-            '"activityType" must be one of [visit, wait, unaccountable time]'
+            '"activityType" must be one of [visit, time, unaccountable time]'
           );
         });
       });

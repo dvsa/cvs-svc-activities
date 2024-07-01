@@ -1,6 +1,6 @@
 import { Configuration } from '../../src/utils/Configuration';
 import supertest, { Response } from 'supertest';
-import { ActivityType } from '@dvsa/cvs-type-definitions/types/v1/activity';
+import { ActivityType } from '@dvsa/cvs-type-definitions/types/v1/enums/activityType.enum';
 
 const config: any = Configuration.getInstance().getConfig();
 const request = supertest(`http://localhost:${config.serverless.port}`);

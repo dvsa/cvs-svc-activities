@@ -1,6 +1,6 @@
 import { Configuration } from '../../src/utils/Configuration';
 import supertest from 'supertest';
-import { WaitReason } from '@dvsa/cvs-type-definitions/types/v1/activity';
+import { WaitReason } from '@dvsa/cvs-type-definitions/types/v1/enums/waitReason.enum';
 
 const config: any = Configuration.getInstance().getConfig();
 const request = supertest(`http://localhost:${config.serverless.port}`);

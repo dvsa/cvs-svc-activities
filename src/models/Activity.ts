@@ -1,5 +1,6 @@
-import { ActivityType, TestStationTypes, WaitReason } from '@dvsa/cvs-type-definitions/types/v1/activity';
-
+import { ActivityType } from '@dvsa/cvs-type-definitions/types/v1/enums/activityType.enum';
+import { TestStationTypes } from '@dvsa/cvs-type-definitions/types/v1/enums/TestStationType.enum';
+import { WaitReason } from '@dvsa/cvs-type-definitions/types/v1/enums/waitReason.enum';
 export const waitReasons: string[] = [
   WaitReason.WAITING_FOR_VEHICLE,
   WaitReason.BREAK,

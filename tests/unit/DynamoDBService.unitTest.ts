@@ -2,7 +2,7 @@ import { DynamoDBService } from '../../src/services/DynamoDBService';
 import { IActivityParams } from '../../src/models/Activity';
 import { DynamoDBDocumentClient, GetCommand, PutCommand, QueryCommand } from '@aws-sdk/lib-dynamodb';
 import { mockClient } from 'aws-sdk-client-mock';
-import { ActivityType } from '@dvsa/cvs-type-definitions/types/v1/activity';
+import { ActivityType } from '@dvsa/cvs-type-definitions/types/v1/enums/activityType.enum';
 
 describe('DynamoDBService', () => {
   context('Query activities', () => {

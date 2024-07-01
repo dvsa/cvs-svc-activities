@@ -1,4 +1,7 @@
-import { ActivitySchema, TestStationTypes, WaitReason, ActivityType } from '@dvsa/cvs-type-definitions/types/v1/activity';
+import { ActivitySchema } from '@dvsa/cvs-type-definitions/types/v1/activity';
+import { ActivityType } from '@dvsa/cvs-type-definitions/types/v1/enums/activityType.enum';
+import { TestStationTypes } from '@dvsa/cvs-type-definitions/types/v1/enums/TestStationType.enum';
+import { WaitReason } from '@dvsa/cvs-type-definitions/types/v1/enums/waitReason.enum';
 import { Configuration } from '../../src/utils/Configuration';
 import supertest, { Response } from 'supertest';
 import { ActivityService } from '../../src/services/ActivityService';

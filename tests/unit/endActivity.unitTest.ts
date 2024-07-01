@@ -2,7 +2,9 @@ import { ActivityService } from '../../src/services/ActivityService';
 import { DynamoDBMockService } from '../models/DynamoDBMockService';
 import { HTTPResponse } from '../../src/utils/HTTPResponse';
 import { HTTPRESPONSE } from '../../src/assets/enums';
-import { ActivitySchema, ActivityType, TestStationTypes } from '@dvsa/cvs-type-definitions/types/v1/activity';
+import { ActivitySchema } from '@dvsa/cvs-type-definitions/types/v1/activity';
+import { ActivityType } from '@dvsa/cvs-type-definitions/types/v1/enums/activityType.enum';
+import { TestStationTypes } from '@dvsa/cvs-type-definitions/types/v1/enums/testStationType.enum';
 
 describe('endActivity', () => {
   let activityService: any;
@@ -69,7 +71,7 @@ describe('endActivity', () => {
         testerStaffId: '132',
         testerEmail: 'tester@dvsa.gov.uk',
         startTime: new Date().toISOString(),
-        endTime: new Date(endTime+1000).toISOString()
+        endTime: new Date().toISOString()
       };
 
       activityId = (await activityService.createActivity(payload)).id;
