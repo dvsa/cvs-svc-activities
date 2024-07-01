@@ -186,7 +186,7 @@ describe('createActivity', () => {
         return activityService.createActivity(payload).catch((error: HTTPResponse) => {
           const body: any = JSON.parse(error.body);
           expect(body.error).toEqual(
-            '"activityType" must be one of [visit, time, unaccountable time]'
+            '"activityType" must be one of [visit, wait, unaccountable time]'
           );
         });
       });
