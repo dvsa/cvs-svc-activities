@@ -1,41 +1,24 @@
-import { ActivityType, StationType } from '../assets/enums';
-
+import { ActivityType } from '@dvsa/cvs-type-definitions/types/v1/enums/activityType.enum';
+import { TestStationTypes } from '@dvsa/cvs-type-definitions/types/v1/enums/testStationType.enum';
+import { WaitReason } from '@dvsa/cvs-type-definitions/types/v1/enums/waitReason.enum';
 export const waitReasons: string[] = [
-  'Waiting for vehicle',
-  'Break',
-  'Admin',
-  'Site issue',
-  'Other'
+  WaitReason.WAITING_FOR_VEHICLE,
+  WaitReason.BREAK,
+  WaitReason.ADMIN,
+  WaitReason.SITE_ISSUE,
+  WaitReason.OTHER
 ];
 export const stationTypes: string[] = [
-  StationType.ATF,
-  StationType.GVTS,
-  StationType.HQ,
-  StationType.POTF
+  TestStationTypes.ATF,
+  TestStationTypes.GVTS,
+  TestStationTypes.HQ,
+  TestStationTypes.POTF
 ];
 export const activitiesTypes: string[] = [
   ActivityType.VISIT,
   ActivityType.WAIT,
   ActivityType.UNACCOUNTABLE_TIME
 ];
-
-export interface IActivity {
-  id?: string;
-  parentId?: string;
-  activityType: ActivityType;
-  testStationName: string;
-  testStationPNumber: string;
-  testStationEmail: string;
-  testStationType: StationType;
-  testerName: string;
-  testerStaffId: string;
-  testerEmail?: string;
-  startTime?: string;
-  endTime?: null | string;
-  waitReason?: [string];
-  notes?: string;
-  activityDay?: string;
-}
 
 export interface IActivityParams {
   fromStartTime: string;
