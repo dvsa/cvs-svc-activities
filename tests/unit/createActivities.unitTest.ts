@@ -302,7 +302,7 @@ describe('createActivity', () => {
       testStationType: TestStationTypes.GVTS,
       testerName: 'Gica',
       testerEmail: 'tester@dvsa.gov.uk',
-      testerStaffId: '132',
+      testerStaffId: '132'
     };
 
     it('should return a uuid', () => {
