@@ -61,7 +61,7 @@ describe('Activity Service - update Activity path', () => {
       return activityService.updateActivity(payload).catch((error: HTTPResponse) => {
         const body: any = JSON.parse(error.body);
         expect(body.error).toEqual(
-          '"waitReason" at position 0 does not match any of the allowed types'
+          `"waitReason[0]" must be one of [${WaitReason.WAITING_FOR_VEHICLE}, ${WaitReason.BREAK}, ${WaitReason.ADMIN}, ${WaitReason.SITE_ISSUE}, ${WaitReason.OTHER}]`
         );
       });
     });

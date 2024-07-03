@@ -5,6 +5,7 @@ import { TestStationTypes } from '@dvsa/cvs-type-definitions/types/v1/enums/test
 import { HTTPResponse } from '../../src/utils/HTTPResponse';
 import { HTTPRESPONSE } from '../../src/assets/enums';
 import { DynamoDBService } from '../../src/services/DynamoDBService';
+import { WaitReason } from '@dvsa/cvs-type-definitions/types/v1/enums/waitReason.enum';
 
 describe('createActivity', () => {
   const visitId: string = '5e4bd304-446e-4678-8289-d34fca9256e8'; // existing-parentId
@@ -256,7 +257,7 @@ describe('createActivity', () => {
         return activityService.createActivity(payload).catch((error: HTTPResponse) => {
           const body: any = JSON.parse(error.body);
           expect(body.error).toEqual(
-            '"waitReason" at position 0 does not match any of the allowed types'
+            `"waitReason[0]" must be one of [${WaitReason.WAITING_FOR_VEHICLE}, ${WaitReason.BREAK}, ${WaitReason.ADMIN}, ${WaitReason.SITE_ISSUE}, ${WaitReason.OTHER}]`
           );
         });
       });

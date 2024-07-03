@@ -1,8 +1,8 @@
 import * as Joi from 'joi';
 import { WaitReason } from '@dvsa/cvs-type-definitions/types/v1/enums/waitReason.enum';
 
-export const ActivityUpdateSchema = Joi.object().keys({
+export const ActivityUpdateModel = Joi.object().keys({
   id: Joi.string().required(),
-  waitReason: Joi.array().items([Object.values(WaitReason)]).required(),
+  waitReason: Joi.array().items(Joi.string().valid(...Object.values(WaitReason))).optional(),
   notes: Joi.string().allow(null)
 });

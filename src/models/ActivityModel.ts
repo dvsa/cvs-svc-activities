@@ -3,13 +3,13 @@ import { ActivityType } from '@dvsa/cvs-type-definitions/types/v1/enums/activity
 import { WaitReason } from '@dvsa/cvs-type-definitions/types/v1/enums/waitReason.enum';
 import { TestStationTypes } from '@dvsa/cvs-type-definitions/types/v1/enums/testStationType.enum';
 
-export const ActivityJoiSchema = Joi.object().keys({
+export const ActivityModel = Joi.object().keys({
   parentId: Joi.string().optional(),
-  activityType: Joi.any().only([Object.values(ActivityType)]).required(),
+  activityType: Joi.string().valid(...Object.values(ActivityType)).required(),
   testStationName: Joi.string().required(),
   testStationPNumber: Joi.string().required(),
   testStationEmail: Joi.string().email().required().allow(''),
-  testStationType: Joi.any().only([Object.values(TestStationTypes)]).required(),
+  testStationType: Joi.string().valid(...Object.values(TestStationTypes)).required(),
   testerName: Joi.string().min(1).max(60).required(),
   testerStaffId: Joi.string().required(),
   testerEmail: Joi.any().when('activityType', {
@@ -19,6 +19,6 @@ export const ActivityJoiSchema = Joi.object().keys({
   }),
   startTime: Joi.string().optional(),
   endTime: Joi.string().optional().allow(null),
-  waitReason: Joi.array().items([Object.values(WaitReason)]).optional(),
+  waitReason: Joi.array().items(Joi.string().valid(...Object.values(WaitReason))).optional(),
   notes: Joi.string().allow(null)
 });
