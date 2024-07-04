@@ -3,7 +3,7 @@ import { ActivityType } from '@dvsa/cvs-type-definitions/types/v1/enums/activity
 import { WaitReason } from '@dvsa/cvs-type-definitions/types/v1/enums/waitReason.enum';
 import { TestStationTypes } from '@dvsa/cvs-type-definitions/types/v1/enums/testStationType.enum';
 
-export const ActivityModel = Joi.object().keys({
+export const ActivityCreated = Joi.object().keys({
   parentId: Joi.string().optional(),
   activityType: Joi.string().valid(...Object.values(ActivityType)).required(),
   testStationName: Joi.string().required(),

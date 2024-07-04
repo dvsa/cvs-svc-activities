@@ -6,8 +6,8 @@ import { ActivitySchema } from '@dvsa/cvs-type-definitions/types/v1/activity';
 import { ActivityType } from '@dvsa/cvs-type-definitions/types/v1/enums/activityType.enum';
 import { HTTPResponse } from '../utils/HTTPResponse';
 import * as Constants from '../assets/enums';
-import { ActivityModel } from '../models/ActivityModel';
-import { ActivityUpdateModel } from '../models/ActivityUpdateModel';
+import { ActivityCreated } from '../models/validators/ActivityCreated';
+import { ActivityUpdated } from '../models/validators/ActivityUpdated';
 import { ServiceException } from '@smithy/smithy-client';
 import { GetCommandOutput } from '@aws-sdk/lib-dynamodb';
 
@@ -30,7 +30,7 @@ export class ActivityService {
    */
   public async createActivity(activity: ActivitySchema): Promise<{ id: string }> {
     // Payload validation
-    const validation: Joi.ValidationResult<ActivitySchema> = ActivityModel.validate(activity);
+    const validation: Joi.ValidationResult<ActivitySchema> = ActivityCreated.validate(activity);
 
     if (validation.error) {
       const error: string = validation.error.details[0].message;
@@ -142,7 +142,7 @@ export class ActivityService {
     const activitiesList: any[] = [];
     for (const each of activities) {
       // Payload validation
-      const validation: Joi.ValidationResult<ActivitySchema> = ActivityUpdateModel.validate(
+      const validation: Joi.ValidationResult<ActivitySchema> = ActivityUpdated.validate(
         each
       );
       if (validation.error) {

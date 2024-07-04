@@ -2,7 +2,7 @@ import { ActivityFilters } from '../utils/Filters';
 import { HTTPResponse } from '../utils/HTTPResponse';
 import { DynamoDBService } from './DynamoDBService';
 import { HTTPRESPONSE } from '../assets/enums';
-import { IActivityParams } from '../models/Activity';
+import { IActivityParams } from '../models/IActivityParams';
 import { isValid } from 'date-fns';
 import { ActivitySchema } from '@dvsa/cvs-type-definitions/types/v1/activity';
 

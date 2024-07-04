@@ -1,5 +1,5 @@
 import { Configuration } from '../utils/Configuration';
-import { IActivityParams } from '../models/Activity';
+import { IActivityParams } from '../models/IActivityParams';
 import { ActivitySchema } from '@dvsa/cvs-type-definitions/types/v1/activity';
 import {
   BatchWriteCommand,

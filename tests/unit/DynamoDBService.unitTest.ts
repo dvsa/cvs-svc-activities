@@ -1,5 +1,5 @@
 import { DynamoDBService } from '../../src/services/DynamoDBService';
-import { IActivityParams } from '../../src/models/Activity';
+import { IActivityParams } from '../../src/models/IActivityParams';
 import { DynamoDBDocumentClient, GetCommand, PutCommand, QueryCommand } from '@aws-sdk/lib-dynamodb';
 import { mockClient } from 'aws-sdk-client-mock';
 import { ActivityType } from '@dvsa/cvs-type-definitions/types/v1/enums/activityType.enum';

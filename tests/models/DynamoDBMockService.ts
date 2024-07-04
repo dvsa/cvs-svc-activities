@@ -1,5 +1,5 @@
 import { Configuration } from '../../src/utils/Configuration';
-import { IActivityParams } from '../../src/models/Activity';
+import { IActivityParams } from '../../src/models/IActivityParams';
 import { ActivitySchema } from '@dvsa/cvs-type-definitions/types/v1/activity';
 import { ServiceException } from '@smithy/smithy-client';
 import { BatchGetCommandOutput, BatchWriteCommandOutput, DeleteCommandOutput, GetCommandOutput, PutCommandOutput } from '@aws-sdk/lib-dynamodb';
