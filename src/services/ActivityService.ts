@@ -1,4 +1,4 @@
-import * as Joi from 'joi';
+import Joi from 'joi';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 import { DynamoDBService } from './DynamoDBService';

@@ -1,4 +1,4 @@
-import * as Joi from 'joi';
+import Joi from 'joi';
 import { ActivityType } from '@dvsa/cvs-type-definitions/types/v1/enums/activityType.enum';
 import { WaitReason } from '@dvsa/cvs-type-definitions/types/v1/enums/waitReason.enum';
 import { TestStationTypes } from '@dvsa/cvs-type-definitions/types/v1/enums/testStationType.enum';
