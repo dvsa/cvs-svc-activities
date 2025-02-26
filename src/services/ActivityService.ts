@@ -1,15 +1,15 @@
-import * as Joi from 'joi';
+import Joi from 'joi';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
-import { AWSError } from 'aws-sdk'; // Only used as a type, so not wrapped by XRay
-import { DocumentClient } from 'aws-sdk/lib/dynamodb/document_client'; // Only used as a type, so not wrapped by XRay
-
 import { DynamoDBService } from './DynamoDBService';
-import { IActivity } from '../models/Activity';
+import { ActivitySchema } from '@dvsa/cvs-type-definitions/types/v1/activity';
+import { ActivityType } from '@dvsa/cvs-type-definitions/types/v1/enums/activityType.enum';
 import { HTTPResponse } from '../utils/HTTPResponse';
 import * as Constants from '../assets/enums';
-import { ActivitySchema } from '../models/ActivitySchema';
-import { ActivityUpdateSchema } from '../models/ActivityUpdateSchema';
+import { ActivityCreated } from '../models/validators/ActivityCreated';
+import { ActivityUpdated } from '../models/validators/ActivityUpdated';
+import { ServiceException } from '@smithy/smithy-client';
+import { GetCommandOutput } from '@aws-sdk/lib-dynamodb';
 
 export class ActivityService {
   public readonly dbClient: DynamoDBService;
@@ -26,11 +26,11 @@ export class ActivityService {
    * Creates a new activity in the database.
    * The startTime of this activity will be now.
    * @param activity - the payload containing the activity
-   * @returns Promise - The ID of the activitiy
+   * @returns Promise - The ID of the activity
    */
-  public async createActivity(activity: IActivity): Promise<{ id: string }> {
+  public async createActivity(activity: ActivitySchema): Promise<{ id: string }> {
     // Payload validation
-    const validation: Joi.ValidationResult<IActivity> = Joi.validate(activity, ActivitySchema);
+    const validation: Joi.ValidationResult<ActivitySchema> = ActivityCreated.validate(activity);
 
     if (validation.error) {
       const error: string = validation.error.details[0].message;
@@ -48,7 +48,7 @@ export class ActivityService {
 
     // 'visit' activity validations and object field assignments
     if (
-      activity.activityType === Constants.ActivityType.VISIT &&
+      activity.activityType === ActivityType.VISIT &&
       (await this.performVisitActValidations(activity))
     ) {
       const startTime = activity.startTime ? activity.startTime : new Date().toISOString();
@@ -59,7 +59,7 @@ export class ActivityService {
     }
     // non-'visit' activity validations and object field assignments
     if (
-      activity.activityType !== Constants.ActivityType.VISIT &&
+      activity.activityType !== ActivityType.VISIT &&
       (await this.performNonVisitActValidations(activity))
     ) {
       // Assign startTime
@@ -80,11 +80,10 @@ export class ActivityService {
       .then(() => {
         return { id };
       })
-      .catch((error: AWSError) => {
-        throw new HTTPResponse(error.statusCode || 500, {
-          error: `${error.code}: ${error.message}
-                At: ${error.hostname} - ${error.region}
-                Request id: ${error.requestId}`
+      .catch((error: ServiceException) => {
+        throw new HTTPResponse(error.$metadata.httpStatusCode || 500, {
+          error: `${error.name}: ${error.message}
+                Request id: ${error.$metadata.requestId}`
         });
       });
   }
@@ -101,7 +100,7 @@ export class ActivityService {
     endTime: string
   ): Promise<{ wasVisitAlreadyClosed: boolean }> {
     try {
-      const result: DocumentClient.GetItemOutput = await this.dbClient.get({ id });
+      const result = await this.dbClient.get({ id }) as GetCommandOutput;
 
       if (result.Item === undefined) {
         console.log(`Error occurred: ${Constants.HTTPRESPONSE.NOT_EXIST} with statusCode: 404`);
@@ -113,7 +112,7 @@ export class ActivityService {
         return { wasVisitAlreadyClosed: true };
       }
 
-      const activity: IActivity = result.Item as IActivity;
+      const activity: ActivitySchema = result.Item as ActivitySchema;
 
       // use value provided by auto-close as activityEndTime, otherwise use Date.now()
       endTime
@@ -127,9 +126,9 @@ export class ActivityService {
       // client error so we rethrow
       if (e instanceof HTTPResponse) throw e;
 
-      const { statusCode, code, message, hostname, region, requestId } = e;
+      const { statusCode, code, message, hostname, region, requestId, name} = e;
       throw new HTTPResponse(statusCode, {
-        error: `${code}: ${message} At: ${hostname} - ${region} Request id: ${requestId}`
+        error: `${code | name}: ${message} At: ${hostname} - ${region} Request id: ${requestId}`
       });
     }
   }
@@ -139,13 +138,12 @@ export class ActivityService {
    * @param activities - the payload containing the activity
    * @returns Promise - void
    */
-  public async updateActivity(activities: IActivity[]): Promise<void> {
+  public async updateActivity(activities: ActivitySchema[]): Promise<void> {
     const activitiesList: any[] = [];
     for (const each of activities) {
       // Payload validation
-      const validation: Joi.ValidationResult<IActivity> = Joi.validate(
-        each,
-        ActivityUpdateSchema
+      const validation: Joi.ValidationResult<ActivitySchema> = ActivityUpdated.validate(
+        each
       );
       if (validation.error) {
         const error: string = validation.error.details[0].message;
@@ -154,13 +152,13 @@ export class ActivityService {
       }
       await this.dbClient
         .get({ id: each.id })
-        .then(async (result: DocumentClient.GetItemOutput): Promise<void> => {
+        .then(async result => {
           // Result checks
-          if (result.Item === undefined) {
+          if ((result as GetCommandOutput).Item === undefined) {
             throw new HTTPResponse(404, { error: Constants.HTTPRESPONSE.NOT_EXIST });
           }
 
-          const dbActivity: IActivity = result.Item as IActivity;
+          const dbActivity: ActivitySchema = (result as GetCommandOutput).Item as ActivitySchema;
 
           // Assign the waitReasons
           Object.assign(dbActivity, { waitReason: each.waitReason });
@@ -168,15 +166,15 @@ export class ActivityService {
           Object.assign(dbActivity, { notes: each.notes });
           activitiesList.push(dbActivity);
         })
-        .catch((error: AWSError | HTTPResponse) => {
+        .catch((error: ServiceException | HTTPResponse) => {
           // If we get HTTPResponse, we rethrow it
           if (error instanceof HTTPResponse) {
             throw error;
           }
 
           // Otherwise, if DynamoDB errors, we throw 500
-          throw new HTTPResponse(error.statusCode || 500, {
-            error: `${error.code}: ${error.message} At: ${error.hostname} - ${error.region} Request id: ${error.requestId}`
+          throw new HTTPResponse(error.$metadata.httpStatusCode || 500, {
+            error: `${error.name}: ${error.message} Request id: ${error.$metadata.requestId}`
           });
         });
     }
@@ -190,13 +188,13 @@ export class ActivityService {
    * @returns boolean
    */
 
-  protected async performVisitActValidations(activity: IActivity): Promise<boolean> {
+  protected async performVisitActValidations(activity: ActivitySchema): Promise<boolean> {
     // Visit activity should not have parent IDs
     if (activity.parentId) {
       throw new HTTPResponse(400, { error: Constants.HTTPRESPONSE.PARENT_ID_NOT_REQUIRED });
     }
 
-    let ongoingVisits: IActivity[];
+    let ongoingVisits: ActivitySchema[];
 
     try {
       // Check if staff already has an ongoing activity if activityType is visit
@@ -221,7 +219,7 @@ export class ActivityService {
    * @param activity - the payload containing the activity
    * @returns boolean
    */
-  protected async performNonVisitActValidations(activity: IActivity): Promise<boolean> {
+  protected async performNonVisitActValidations(activity: ActivitySchema): Promise<boolean> {
     // Non-visit activity requires parent ID
     if (!activity.parentId) {
       throw new HTTPResponse(400, { error: Constants.HTTPRESPONSE.PARENT_ID_REQUIRED });
@@ -229,9 +227,9 @@ export class ActivityService {
     // Validate if parentId exists.
     await this.dbClient
       .get({ id: activity.parentId })
-      .then(async (result: DocumentClient.GetItemOutput): Promise<void> => {
+      .then(async result => {
         // Result checks
-        if (result.Item === undefined) {
+        if ((result as GetCommandOutput).Item === undefined) {
           throw new HTTPResponse(400, { error: Constants.HTTPRESPONSE.PARENT_ID_NOT_EXIST });
         }
         // Validate if startTime is provided in request
@@ -243,15 +241,15 @@ export class ActivityService {
           throw new HTTPResponse(400, { error: Constants.HTTPRESPONSE.END_TIME_EMPTY });
         }
       })
-      .catch((error: AWSError | HTTPResponse) => {
+      .catch((error: ServiceException | HTTPResponse) => {
         // If we get HTTPResponse, we rethrow it
         if (error instanceof HTTPResponse) {
           throw error;
         }
 
         // Otherwise, if DynamoDB errors, we throw 500
-        throw new HTTPResponse(error.statusCode || 500, {
-          error: `${error.code}: ${error.message} At: ${error.hostname} - ${error.region} Request id: ${error.requestId}`
+        throw new HTTPResponse(error.$metadata.httpStatusCode || 500, {
+          error: `${error.name}: ${error.message} Request id: ${error.$metadata.requestId}`
         });
       });
     return true;
